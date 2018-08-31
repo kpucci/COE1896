@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Registration</title>
+{% endblock %}
+
+{% block body %}
+    <div id="register-form-box" class="register-form-box">
+        <form id="register-form" action="" method="post">
+            <label id="type-label">Account Type:</label>
+            <div id="type-radio-box" class="type-radio-box">
+                <input type="radio" name="type" value="player"> Player
+                <input type="radio" name="type" value="coach"> Coach
+                <input type="radio" name="type" value="parent"> Parent
+            </div>
+            <label id="first-name-label">First Name:</label>
+            <input id="first-name-input" type="text" placeholder="First Name" name="first_name">
+            <label id="last-name-label">Last Name:</label>
+            <input id="last-name-input" type="text" placeholder="Last Name" name="last_name">
+            <div id="player-info-box" class="info-box">
+                <label id="level-label">Hockey Level:</label>
+                <select id="level-input" class="level-input">
+                    <option value="mite">Mite</option>
+                    <option value="squirt">Squirt</option>
+                    <option value="bantam">Bantam</option>
+                    <option value="midget">Midget</option>
+                    <option value="college">College</option>
+                    <option value="semi">Semi-Pro</option>
+                    <option value="pro">Pro</option>
+                </select>
+                <select id="skill-input" class="skill-input">
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                    <option value="pro">Pro</option>
+                </select>
+                <label id="hand-label">Handedness:</label>
+                <div id="hand-box" class="hand-box">
+                    <input type="radio" name="hand" value="right"> Right
+                    <input type="radio" name="hand" value="left"> Left
+                </div>
+            </div>
+            <div id="parent-info-box" class="info-box">
+                <label id="child-label">Child:</label>
+                <input id="child-name-input" type="text" placeholder="Child's Name" name="child_name">
+            </div>
+            <label id="email-label">E-mail:</label>
+            <input id="email-input" type="text" placeholder="johndoe@example.com" name="email">
+            <div class="register-button-box">
+              <button id="register-button" type="submit" value="submit">Register</button>
+              <button id="cancel-button" type="button" value="cancel">Cancel</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}
+    <title>Login</title>
+{% endblock %}
+
+{% block body %}
+    <div id="login-form-box" class="login-form-box">
+        <form id="login-form" action="" method="post">
+          <div class="user-info-box">
+            <div class="username-box">
+              <label id="username-label">Username:</label>
+              <input id="username-input" type="text" placeholder="Username" name="username">
+            </div>
+            <div class="password-box">
+              <label id="password-label">Password:</label>
+              <input id="password-input" type="password" placeholder="Password" name="password">
+            </div>
+          </div>
+          <div class="login-button-box">
+            <button id="submit-button" type="submit" value="submit">Submit</button>
+            <button id="cancel-button" type="button" value="cancel">Cancel</button>
+          </div>
+        </form>
+    </div>
+{% endblock %}
