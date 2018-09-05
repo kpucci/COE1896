@@ -45,11 +45,11 @@ db.init_app(app)
 # Resources:
 
 api.add_resource(PlayerListResource, '/players')
-api.add_resource(PlayerResource, '/players/<int:player_id>')
+api.add_resource(PlayerResource, '/players/<int:id>')
 api.add_resource(CoachListResource, '/coaches')
-api.add_resource(CoachResource, '/coaches/<int:coach_id>')
+api.add_resource(CoachResource, '/coaches/<int:id>')
 api.add_resource(ParentListResource, '/parents')
-api.add_resource(ParentResource, '/parents/<int:parent_id>')
+api.add_resource(ParentResource, '/parents/<int:id>')
 
 #--------------------------------------------------------------------------------------------
 
@@ -68,6 +68,7 @@ def initdb_command():
 @app.route("/", methods=['GET','POST'])
 def login():
     # TODO: Add authentication
+    # TODO: Remember me functionality
 
     if request.method == "GET":
         if "logged_in" in session:
@@ -118,7 +119,7 @@ def register():
 # Player profile page:
 @app.route("/player/<id>", methods=['GET'])
 def player_profile(id=None):
-    return render_template("player_profile.html")
+    return render_template("player_profile.html", id=id)
 
 #--------------------------------------------------------------------------------------------
 

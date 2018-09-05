@@ -16,6 +16,8 @@ class Player(db.Model):
     age = db.Column(db.Integer)
     hand = db.Column(db.Boolean)
 
+    # drills = db.relationship('Drill', backref='player', lazy='dynamic')
+
     def _repr_(self):
         return "<Player {}>".format(repr(self.email))
 
@@ -42,3 +44,25 @@ class Parent(db.Model):
 
     def _repr_(self):
         return "<Parent {}>".format(repr(self.email))
+
+class Drill(db.Model):
+    id = db.Column(db.Integer, unique=True, primary_key=True)
+    name = db.Column(db.String(80))
+    description = db.Column(db.String(200))
+
+    def _repr_(self):
+        return "<Drill {}>".format(repr(self.id))
+
+class Practice(db.Model):
+    id = db.Column(db.Integer, unique=True, primary_key=True)
+    player_id = db.Column(db.Integer, db.ForeignKey('player.id'))
+    player = db.relationship("Player", backref=db.backref("practice"))
+
+    drill_id = db.Column(db.Integer, db.ForeignKey('drill.id'))
+    drill = db.relationship("Drill", backref=db.backref("practice"))
+
+    speed = db.Column(db.Float)
+    # TODO: Add other data
+
+    def _repr_(self):
+        return "<Practice {}>".format(repr(self.id))
