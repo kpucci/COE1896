@@ -4,23 +4,31 @@
     <title>Login</title>
 {% endblock %}
 
+{% block style %}
+    <link href="{{url_for('static', filename='css/login.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block script %}
+    <script type = "text/javascript" src = "{{url_for('static', filename='js/login.js')}}" ></script>
+{% endblock %}
+
 {% block body %}
-    <div id="login-form-box" class="login-form-box">
+<div class="login-box">
+    <h1>Please sign in</h1>
+    <div class="control-box">
         <form id="login-form" action="" method="post">
-          <div class="user-info-box">
-            <div class="username-box">
-              <label id="username-label">Username:</label>
-              <input id="username-input" type="text" placeholder="Username" name="username">
+            <input type="email" id="email-input" class="form-control" placeholder="Email address" name="email" required autofocus>
+            <input type="password" id="password-input" class="form-control" placeholder="Password" name= "password" required>
+            <div class="checkbox">
+              <label class="remember-label">
+                <input type="checkbox" value="remember-me"> Remember me
+              </label>
             </div>
-            <div class="password-box">
-              <label id="password-label">Password:</label>
-              <input id="password-input" type="password" placeholder="Password" name="password">
-            </div>
-          </div>
-          <div class="login-button-box">
-            <button id="submit-button" type="submit" value="submit">Submit</button>
-            <button id="cancel-button" type="button" value="cancel">Cancel</button>
-          </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
         </form>
+        <hr />
+        <h3>Not a member?</h3>
+        <button class="btn btn-lg btn-primary btn-block" id="register-button" type="button" value="register" onclick="window.location.href={{url_for('register')}};">Create New Account</button>
     </div>
+</div>
 {% endblock %}

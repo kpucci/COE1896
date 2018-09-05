@@ -4,52 +4,116 @@
     <title>Registration</title>
 {% endblock %}
 
+{% block style %}
+    <link href="{{url_for('static', filename='css/register.css')}}" rel="stylesheet">
+{% endblock %}
+
+{% block script %}
+    <script type = "text/javascript" src = "{{url_for('static', filename='js/register.js')}}" ></script>
+{% endblock %}
+
 {% block body %}
-    <div id="register-form-box" class="register-form-box">
-        <form id="register-form" action="" method="post">
-            <label id="type-label">Account Type:</label>
-            <div id="type-radio-box" class="type-radio-box">
-                <input type="radio" name="type" value="player"> Player
-                <input type="radio" name="type" value="coach"> Coach
-                <input type="radio" name="type" value="parent"> Parent
+    <form id="register-form" action="" method="post">
+        <h1>Registration</h1>
+        <h3 id="type-label">Account Type</h3>
+        <div class="form-group">
+            <div class="form-check form-check-inline">
+                <label class="radio-inline" for="player-type">
+                    <input class="form-check-input" type="radio" id="player-type" name="type" onchange="showPlayerInputs()" checked>Player
+                </label>
             </div>
-            <label id="first-name-label">First Name:</label>
-            <input id="first-name-input" type="text" placeholder="First Name" name="first_name">
-            <label id="last-name-label">Last Name:</label>
-            <input id="last-name-input" type="text" placeholder="Last Name" name="last_name">
-            <div id="player-info-box" class="info-box">
-                <label id="level-label">Hockey Level:</label>
-                <select id="level-input" class="level-input">
-                    <option value="mite">Mite</option>
-                    <option value="squirt">Squirt</option>
-                    <option value="bantam">Bantam</option>
-                    <option value="midget">Midget</option>
-                    <option value="college">College</option>
-                    <option value="semi">Semi-Pro</option>
-                    <option value="pro">Pro</option>
-                </select>
-                <select id="skill-input" class="skill-input">
-                    <option value="beginner">Beginner</option>
-                    <option value="intermediate">Intermediate</option>
-                    <option value="advanced">Advanced</option>
-                    <option value="pro">Pro</option>
-                </select>
-                <label id="hand-label">Handedness:</label>
-                <div id="hand-box" class="hand-box">
-                    <input type="radio" name="hand" value="right"> Right
-                    <input type="radio" name="hand" value="left"> Left
+            <div class="form-check form-check-inline">
+                <label class="form-check-label" for="coach-type">
+                    <input class="form-check-input" type="radio" id="coach-type" name="type" onchange="showCoachInputs()">Coach
+                </label>
+            </div>
+            <div class="form-check form-check-inline">
+                <label class="form-check-label" for="parent-type">
+                    <input class="form-check-input" type="radio" id="parent-type" name="type" value="parent" onchange="showParentInputs()">Parent
+                </label>
+            </div>
+        </div>
+
+
+        <h3 id="info-header">Player Info</h3>
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="first-name">First Name</label>
+                <input type="text" class="form-control" id="first-name" placeholder="First">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="last-name">Last Name</label>
+                <input type="text" class="form-control" id="last-name" placeholder="Last">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="email-input">Email</label>
+            <input type="email" class="form-control" id="email-input" placeholder="Email">
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6">
+                <label for="password-input">Password</label>
+                <input type="password" class="form-control" id="password-input" placeholder="Password">
+            </div>
+            <div class="form-group col-md-6">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" class="form-control" id="confirm-password" placeholder="Password">
+            </div>
+        </div>
+
+        <div id="player-info-box">
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label for="hockey-level">Hockey Level</label>
+                    <select id="hockey-level" class="form-control">
+                        <option value="0" selected>Mite</option>
+                        <option value="1">Squirt</option>
+                        <option value="2">Bantam</option>
+                        <option value="3">Midget</option>
+                        <option value="4">College</option>
+                        <option value="5">Semi-Pro</option>
+                        <option value="6">Pro</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="skill-level">Skill Level</label>
+                    <select id="skill-level" class="form-control">
+                        <option value="0" selected>Beginner</option>
+                        <option value="1">Intermediate</option>
+                        <option value="2">Advanced</option>
+                        <option value="3">Pro</option>
+                    </select>
                 </div>
             </div>
-            <div id="parent-info-box" class="info-box">
-                <label id="child-label">Child:</label>
-                <input id="child-name-input" type="text" placeholder="Child's Name" name="child_name">
+            <div class="form-group form-row">
+                <label class="col-sm-3 col-form-label">Handedness</label>
+                <div class="col-sm">
+                    <div class="btn-group btn-group-toggle btn-group-sm" data-toggle="buttons">
+                        <label class="btn btn-secondary active">
+                            <input type="radio" name="options" id="left" autocomplete="off" checked> Left
+                        </label>
+                        <label class="btn btn-secondary">
+                            <input type="radio" name="options" id="right" autocomplete="off"> Right
+                        </label>
+                    </div>
+                </div>
+
             </div>
-            <label id="email-label">E-mail:</label>
-            <input id="email-input" type="text" placeholder="johndoe@example.com" name="email">
-            <div class="register-button-box">
-              <button id="register-button" type="submit" value="submit">Register</button>
-              <button id="cancel-button" type="button" value="cancel">Cancel</button>
+        </div>
+
+        <div id="parent-info-box">
+            <div class="form-group form-row">
+                <label for="child-input">Child</label>
+                <i class="fa fa-search" aria-hidden="false"></i>
+                <input class="form-control" id="child-search" type="text" placeholder="Search" aria-label="Search">
             </div>
-        </form>
-    </div>
+        </div>
+
+        <div class="register-button-box">
+            <button class="btn btn-lg btn-primary btn-block" id="register-button" type="button" onclick="register();">Register</button>
+            <button class="btn btn-lg btn-primary btn-block" id="cancel-button" type="button" value="cancel">Cancel</button>
+        </div>
+    </form>
 {% endblock %}
