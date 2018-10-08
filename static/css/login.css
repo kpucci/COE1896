@@ -6,13 +6,11 @@ body{
     background-image: url("hockey_rink_background.jpg");
     background-repeat: no-repeat;
     background-size: cover;
-    font-family: 'Karla', sans-serif;
+    font-family: 'Heebo', sans-serif;
     overflow-x: auto;
     overflow-y: auto;
     background-attachment: fixed;
     background-position: center;
-    padding-top: 40px;
-    padding-bottom: 40px;
 }
 
 div.login-box{
@@ -25,6 +23,7 @@ div.login-box{
     background-color: rgb(0,0,0); /* Fallback color */
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
     text-align: center;
+    height: 100vh;
     /* outline: 1px solid blue; */
 }
 
@@ -70,6 +69,10 @@ div.control-box{
 
 hr, h1, h3, label{
     color: white;
+}
+
+hr{
+    border-top: 1px solid rgba(256,256,256,1);
 }
 
 h1{

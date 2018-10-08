@@ -15,22 +15,41 @@
 {% block body %}
 
 <!-- Top Navigation Bar -->
-<nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-  <a id="player-name" class="navbar-brand col-sm-3 col-md-2 mr-0" href="#home">Player Name</a>
-  <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
-  <ul class="navbar-nav px-3">
-    <li id="player-id" class="nav-item text-nowrap" value="{{ id }}">
-      <a class="nav-link" href="#signout">Sign out</a>
-    </li>
-  </ul>
+<nav class="navbar navbar-dark navbar-expand-sm bg-dark p-0 fixed-top shadow topnav">
+  <a id="player-name" class="navbar-brand" href="#home">Player Name</a>
+  <button id="player-id" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#togglerData" aria-controls="togglerData" aria-expanded="false" aria-label="Toggle Navigation" value="{{ id }}">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="togglerData">
+    <a id="stats-link" class="nav-link active" href="#stats" onclick="loadStats();">Stats</a>
+    <a id="drills-link" class="nav-link" href="#drills" onclick="loadDrills();">Drills</a>
+    <a id="catalog-link" class="nav-link" href="#catalog" onclick="loadCatalog();">Catalog</a>
+    <h6 class="text-muted sidebar-heading">Account</h6>
+    <a id="settings-link" class="nav-link" href="#settings">Settings</a>
+    <a id="signout-link" class="nav-link" href="#signout">Sign out</a>
+  </div>
+
 </nav>
 
 <!-- Side Navigation Bar -->
 <div class="container-fluid">
   <div class="row">
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <nav class="navbar navbar-dark flex-column align-items-center justify-content-start col-auto bg-dark p-0 shadow sidebar">
+      <a id="player-name-2" class="navbar-brand navbar-name" href="#home">Player Name</a>
+      <a id="stats-link-2" class="nav-link active" href="#stats" onclick="loadStats();">Stats</a>
+      <a id="drills-link-2" class="nav-link" href="#drills" onclick="loadDrills();">Drills</a>
+      <a id="catalog-link-2" class="nav-link" href="#catalog" onclick="loadCatalog();">Catalog</a>
+      <h6 class="text-muted sidebar-heading">Account</h6>
+      <a id="settings-link-2" class="nav-link" href="#settings">Settings</a>
+      <a id="signout-link-2" class="nav-link" href="#signout">Sign out</a>
+    </nav>
+
+    <!-- <nav class="col-2 d-md-block bg-dark sidebar">
       <div class="sidebar-sticky">
+        <a id="player-name-2" class="navbar-brand col-sm-3 col-md-2 mr-0" href="#home">Player Name</a>
         <ul class="nav flex-column">
+
           <li class="nav-item">
             <a id="stats-link" class="nav-link active" href="#stats" onclick="loadStats()">
               <span data-feather="home"></span>
@@ -66,10 +85,10 @@
           </li>
         </ul>
       </div>
-    </nav>
+    </nav> -->
 
     <!-- Main Content -->
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+    <main role="main" class="col ml-sm-auto px-4">
 
       <!-- Stats View -->
       <div id="stats">
@@ -99,91 +118,8 @@
         </ol>
 
         <!-- Carousel Content -->
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <div class="card-deck">
-              <div class="card">
-                <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg" alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">Drill #1</h5>
-                  <p class="card-text">Short description.</p>
-                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-              </div>
-              <div class="card">
-                <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(18).jpg" alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">Drill #2</h5>
-                  <p class="card-text">Short description.</p>
-                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-              </div>
-              <div class="card">
-                <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(35).jpg" alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">Drill #3</h5>
-                  <p class="card-text">Short description.</p>
-                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <div class="card-deck">
-              <div class="card">
-                <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg" alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">Drill #4</h5>
-                  <p class="card-text">Short description.</p>
-                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-              </div>
-              <div class="card">
-                <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(18).jpg" alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">Drill #5</h5>
-                  <p class="card-text">Short description.</p>
-                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-              </div>
-              <div class="card">
-                <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(35).jpg" alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">Drill #6</h5>
-                  <p class="card-text">Short description.</p>
-                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <div class="card-deck">
-              <div class="card">
-                <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg" alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">Drill #7</h5>
-                  <p class="card-text">Short description.</p>
-                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-              </div>
-              <div class="card">
-                <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(18).jpg" alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">Drill #8</h5>
-                  <p class="card-text">Short description.</p>
-                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-              </div>
-              <div class="card">
-                <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(35).jpg" alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">Drill #9</h5>
-                  <p class="card-text">Short description.</p>
-                  <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="carousel-inner" id="drill-carousel">
+
         </div>
       </div>
 

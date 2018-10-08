@@ -10,7 +10,16 @@ from resources import (
     CoachResource,
     CoachListResource,
     ParentResource,
-    ParentListResource
+    ParentListResource,
+    DrillResource,
+    DrillListResource,
+    PracticeResource,
+    PracticeListResource,
+    PlaylistResource,
+    PlaylistListResource,
+    TeamResource,
+    TeamListResource,
+    CatalogResource
 )
 from flask_restful import (
     reqparse,
@@ -23,7 +32,11 @@ from models import (
     db,
     Player,
     Coach,
-    Parent
+    Parent,
+    Drill,
+    Practice,
+    Playlist,
+    Team
 )
 
 app = Flask(__name__)
@@ -50,6 +63,15 @@ api.add_resource(CoachListResource, '/coaches')
 api.add_resource(CoachResource, '/coaches/<int:id>')
 api.add_resource(ParentListResource, '/parents')
 api.add_resource(ParentResource, '/parents/<int:id>')
+api.add_resource(DrillListResource, '/drills')
+api.add_resource(DrillResource, '/drills/<int:id>')
+api.add_resource(PracticeListResource, '/practices')
+api.add_resource(PracticeResource, '/practices/<int:id>')
+api.add_resource(PlaylistResource, '/playlists/<int:id>')
+api.add_resource(PlaylistListResource, '/playlists')
+api.add_resource(TeamResource, '/teams/<int:id>')
+api.add_resource(TeamListResource, '/teams')
+api.add_resource(CatalogResource, '/catalog/<int:id>')
 
 #--------------------------------------------------------------------------------------------
 
@@ -59,6 +81,48 @@ def initdb_command():
     """Creates the database tables."""
     db.drop_all()
     db.create_all()
+
+    drill1 = Drill(id=1, name="Figure 8", description="Move ball in figure 8 around cones")
+    drill2 = Drill(id=2, name="Three Cones", description="Stickhandle ball around triangle of cones")
+    drill3 = Drill(id=3, name="Toe Drag", description="Pull ball back with toe of stick")
+    drill4 = Drill(id=4, name="Side-to-Side Dribble", description="Stickhandle ball in front of feet")
+    drill5 = Drill(id=5, name="Forehand-to-Backhand", description="Stickhandle ball next to body")
+    drill6 = Drill(id=6, name="Around the World", description="Stickhandle ball from one side of body to other side")
+    drill7 = Drill(id=7, name="Line Drill", description="Stickhandle ball through four cones arranged in a straight line")
+    drill8 = Drill(id=8, name="Lucky Clover", description="Stickhandle ball in clover shape around four cones")
+    drill9 = Drill(id=9, name="Wide Dribble", description="Stickhandle ball in front of feet using wide motions")
+
+    db.session.add(drill1)
+    db.session.add(drill2)
+    db.session.add(drill3)
+    db.session.add(drill4)
+    db.session.add(drill5)
+    db.session.add(drill6)
+    db.session.add(drill7)
+    db.session.add(drill8)
+    db.session.add(drill9)
+
+    player = Player(id=1, email="k.pucci103@gmail.com", password="pass", first_name="Katie", last_name="Pucci", hockey_level=5, skill_level=3, hand=True)
+
+    db.session.add(player)
+
+    playlist = Playlist(id=player.id)
+    player.playlist = playlist
+
+    db.session.add(playlist)
+
+    player.playlist.drills.append(drill1)
+    player.playlist.drills.append(drill2)
+    player.playlist.drills.append(drill3)
+    player.playlist.drills.append(drill4)
+    player.playlist.drills.append(drill5)
+    player.playlist.drills.append(drill6)
+    player.playlist.drills.append(drill7)
+    player.playlist.drills.append(drill8)
+    player.playlist.drills.append(drill9)
+
+    db.session.commit()
+
     print('Initialized the database.')
 
 #--------------------------------------------------------------------------------------------
@@ -113,7 +177,6 @@ def logout():
 def register():
     return render_template("register.html")
 
-
 #--------------------------------------------------------------------------------------------
 
 # Player profile page:
@@ -139,7 +202,11 @@ def parent_profile(id=None):
 
 # Drill catalog page:
 @app.route("/catalog/", methods=['GET'])
-def catalog():
+def catalog(id=None):
+    # Get player
+    # Get player's playlist
+    # Get all drills
+    # Filter out drills that are already in the playlist
     return render_template("catalog.html")
 
 

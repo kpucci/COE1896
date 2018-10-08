@@ -1,0 +1,53 @@
+BACKGROUND
+
+- Intro sentence
+  - Common drills
+  - Products currently used
+    - Pros
+    - Cons
+  - Reasons why our product is needed
+
+
+Stickhandling is one of the most important skills a hockey player should have. <Insert statistic here>.
+
+Stickhandling is
+
+
+While there are many products available to help players practice their stickhandling, there is no product that can tell a player how to improve their technique. It is for this reason that the <insert name here> is needed product in the hockey world.
+
+PRELIMINARY DESIGN
+
+- What are the major components and subcomponents?
+  - Gloves
+  - Ball/Cones
+  - Application
+  - Communication/Data Transmission
+
+- Block diagrams/figures
+
+
+- Purpose of app
+- General description
+- Details of design
+
+An application will be developed to assist the player in performing drills and viewing their progress. When the player selects a specific drill to practice, the application will illustrate where to place the cones and how to properly move the ball around them. Once the player completes the drill, the data received from the various sensors on the equipment will be analyzed and recommendations will be given on how to improve. Typical feedback will include modifications to hand position and pressure on the stick, ball location on the stick blade, and ball distance from the cones.
+
+
+
+<Use case diagram>
+
+<Class diagram>
+
+<Sequence diagram>
+
+- Securely login to the application
+- Different access levels: Player, Coach, Parent
+-
+
+
+To ensure portability, the application will be designed for both web and mobile platforms using
+
+and will be hosted on a server managed by our team. Additionally, a database will be used to store user data such as email address, skill level, practice information, saved drills, etc.
+
+
+It will need to communicate via bluetooth with the various sensors in the system.
