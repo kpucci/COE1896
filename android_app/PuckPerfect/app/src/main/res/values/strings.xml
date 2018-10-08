@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PuckPerfect</string>
+    <string name="email_message">Email Address</string>
+    <string name="password_message">Password</string>
+    <string name="signin_message">Please sign in</string>
+    <string name="remember_me">Remember me</string>
+    <string name="signin_button">Sign in</string>
+    <string name="not_a_member">Not a member?</string>
+    <string name="new_account">Create New Account</string>
+
+</resources>
