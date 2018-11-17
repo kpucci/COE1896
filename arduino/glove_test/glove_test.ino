@@ -142,7 +142,9 @@ void loop() {
     unsigned long currentMillis = millis();
   
     // wait for MPU interrupt or extra packet(s) available
-    while (!mpuInterrupt && fifoCount < packetSize){}
+    while (!mpuInterrupt && fifoCount < packetSize){
+      bluetooth.write('1');
+      }
   
     // reset interrupt flag and get INT_STATUS byte
     mpuInterrupt = false;
@@ -153,6 +155,7 @@ void loop() {
 
     if ((mpuIntStatus & 0x10) || fifoCount == 1024) {
       mpu.resetFIFO();
+      bluetooth.write('0');
     } else if (mpuIntStatus & 0x02) {
       while (fifoCount < packetSize) fifoCount = mpu.getFIFOCount();
       mpu.getFIFOBytes(fifoBuffer, packetSize);
@@ -203,6 +206,8 @@ void loop() {
         bluetooth.write(packet);
         free(packet);
       } 
+      else
+        bluetooth.write('2');
     }
   }
 }
