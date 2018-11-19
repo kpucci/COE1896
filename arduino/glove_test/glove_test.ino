@@ -143,8 +143,7 @@ void loop() {
   
     // wait for MPU interrupt or extra packet(s) available
     while (!mpuInterrupt && fifoCount < packetSize){
-      bluetooth.write('1');
-      }
+    }
   
     // reset interrupt flag and get INT_STATUS byte
     mpuInterrupt = false;
@@ -206,8 +205,6 @@ void loop() {
         bluetooth.write(packet);
         free(packet);
       } 
-      else
-        bluetooth.write('2');
     }
   }
 }
