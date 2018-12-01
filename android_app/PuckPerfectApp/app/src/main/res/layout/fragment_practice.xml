@@ -19,27 +19,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="16dp"
                 android:text="@string/figure_8"
                 android:textAlignment="center"
                 android:textAppearance="@android:style/TextAppearance.Material.Large"
+                android:textSize="30sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <FrameLayout
                 android:id="@+id/coneDrillFrame"
-                android:layout_width="309dp"
-                android:layout_height="218dp"
-                android:layout_marginTop="16dp"
+                android:layout_width="600dp"
+                android:layout_height="250dp"
+                android:layout_marginTop="32dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/figure_8_title">
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="309dp"
+                    android:layout_width="600dp"
                     android:layout_height="218dp"
                     android:layout_marginTop="16dp"
                     android:src="@drawable/figure_8_pic"
@@ -51,11 +52,11 @@
 
             <ScrollView
                 android:id="@+id/scrollView2"
-                android:layout_width="379dp"
-                android:layout_height="96dp"
+                android:layout_width="0dp"
+                android:layout_height="500dp"
                 android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/coneDrillFrame"
+                app:layout_constraintStart_toStartOf="@+id/coneDrillFrame"
                 app:layout_constraintTop_toBottomOf="@+id/coneDrillFrame">
 
                 <LinearLayout
@@ -68,6 +69,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/figure_8_description"
+                        android:textSize="24sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         tools:layout_editor_absoluteY="331dp" />
@@ -80,12 +82,14 @@
                 style="@style/Widget.AppCompat.Button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="32dp"
                 android:background="@color/colorAccent"
                 android:text="@string/practice"
                 android:textSize="24sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintEnd_toEndOf="@+id/scrollView2"
+                app:layout_constraintStart_toStartOf="@+id/scrollView2"
+                app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
 
         </android.support.constraint.ConstraintLayout>

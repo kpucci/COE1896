@@ -4,21 +4,20 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
-import android.graphics.PorterDuff;
-import android.util.Log;
+import android.graphics.Rect;
+//import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import java.util.ArrayList;
 
-/**
- * Class to animate puck moving in figure 8 motion
- */
-public class ConeDrillGif extends SurfaceView implements SurfaceHolder.Callback, Runnable{
+public class ConeMap extends SurfaceView implements SurfaceHolder.Callback, Runnable{
 
     private SurfaceHolder surfaceHolder = null;
 
     private Paint paint = null;
+    private Paint sensorPaint = null;
+    private Paint currPaint = null;
 
     private Thread thread = null;
 
@@ -27,21 +26,13 @@ public class ConeDrillGif extends SurfaceView implements SurfaceHolder.Callback,
 
     private Canvas canvas = null;
 
-    // Puck path coordinates
-    // Phone version
-    // private static int[] x_coords = {400, 435, 500, 600, 700, 730, 715, 605, 495, 400, 300, 165, 80, 80, 165, 285, 365};
-    // private static int[] y_coords = {300, 250, 180, 145, 190, 260, 375, 455, 405, 300, 180, 160, 255, 375, 455, 425, 360};
-
-    // Tablet version
-    private static int[] x_coords = {670, 725, 820, 955, 1070, 1125, 1100, 975, 800, 670, 545, 345, 230, 235, 355, 500, 610};
-    private static int[] y_coords = {285, 215, 115, 75, 125, 235, 385, 485, 425, 285, 135, 85, 195, 360, 485, 465, 360};
+    private ArrayList<Integer> x_coords = new ArrayList<>();
+    private ArrayList<Integer> y_coords = new ArrayList<>();
 
 
-    private int index = 0;
+    private static String LOG_TAG = "SURFACE_VIEW_THREAD";
 
-    private static String TAG = "CONE_DRILL_GIF";
-
-    public ConeDrillGif(Context context) {
+    public ConeMap(Context context) {
         super(context);
 
         setFocusable(true);
@@ -53,14 +44,19 @@ public class ConeDrillGif extends SurfaceView implements SurfaceHolder.Callback,
 
         // Create the paint object which will draw the text.
         paint = new Paint();
-        paint.setColor(Color.BLACK);
+//        paint.setTextSize(100);
+        paint.setColor(Color.GREEN);
 
+        sensorPaint = new Paint();
+        sensorPaint.setColor(Color.GRAY);
+
+        currPaint = new Paint();
+        currPaint.setColor(Color.RED);
 
         // Set the SurfaceView object at the top of View object.
         setZOrderOnTop(true);
 
-        // Set background to transparent
-        surfaceHolder.setFormat(PixelFormat.TRANSPARENT);
+        //setBackgroundColor(Color.RED);
     }
 
     @Override
@@ -90,56 +86,69 @@ public class ConeDrillGif extends SurfaceView implements SurfaceHolder.Callback,
     public void run() {
         while(threadRunning)
         {
+
             long startTime = System.currentTimeMillis();
 
-            drawPuck();
+            drawMap();
 
             long endTime = System.currentTimeMillis();
 
             long deltaTime = endTime - startTime;
 
-            // Gets around screen refreshing
-            if(deltaTime < 750)
+            if(deltaTime < 100)
             {
                 try {
-                    Thread.sleep(750 - deltaTime);
+                    Thread.sleep(100 - deltaTime);
                 }catch (InterruptedException ex)
                 {
-                    // TODO: Error handling
+//                    Log.e(LOG_TAG, ex.getMessage());
                 }
 
             }
         }
     }
 
-    /**
-     * Draw puck on surface view
-     */
-    private void drawPuck()
+    private void drawMap()
     {
+        // Only draw text on the specified rectangle area.
         canvas = surfaceHolder.lockCanvas();
 
-        // Paint a transparent background -- this removes any old pucks that were drawn
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        // Draw sensors
+        Rect sensor1 = new Rect(200, 500, 400, 400);
+        canvas.drawRect(sensor1, sensorPaint);
 
-        // Draw puck
-        canvas.drawCircle(x_coords[index], y_coords[index], 30, paint);
+        Rect sensor2 = new Rect(600, 500, 800, 400);
+        canvas.drawRect(sensor2, sensorPaint);
 
-        // Increment index to move along path
-        index++;
-        if(index == x_coords.length)
-            index = 0;
+        int num_points = x_coords.size();
 
-        // Send message to main UI thread to update the drawing to the main view special area
+        // Draw points
+        for(int i=0; i<num_points-1; i++) {
+            canvas.drawCircle(x_coords.get(i), y_coords.get(i), 10, paint);
+        }
+
+        if(num_points != 0)
+            canvas.drawCircle(x_coords.get(num_points-1), y_coords.get(num_points-1), 10, currPaint);
+
+        // Send message to main UI thread to update the drawing to the main view special area.
         surfaceHolder.unlockCanvasAndPost(canvas);
     }
 
-    public void stop()
+    public void addPoints(int x1, int y1, int x2, int y2)
     {
-        threadRunning = false;
+        x_coords.add(x1);
+        y_coords.add(y1);
+
+        x_coords.add(x2);
+        y_coords.add(y2);
+    }
+
+    public void addPoint(int x1, int y1)
+    {
+        x_coords.add(x1);
+        y_coords.add(y1);
     }
 }
-
 
 
 

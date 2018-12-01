@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ParentTypeFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:isScrollContainer="true"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbars="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/parentInfo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/parent_info"
+                android:textAlignment="center"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/parent_info" />
+
+            <EditText
+                android:id="@+id/parentFirstName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="@string/first_name"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="@+id/parentInfo"
+                app:layout_constraintStart_toStartOf="@+id/parentInfo"
+                app:layout_constraintTop_toBottomOf="@+id/parentInfo" />
+
+            <EditText
+                android:id="@+id/parentLastName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="@string/last_name"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="@+id/parentFirstName"
+                app:layout_constraintStart_toStartOf="@+id/parentFirstName"
+                app:layout_constraintTop_toBottomOf="@+id/parentFirstName" />
+
+            <EditText
+                android:id="@+id/parentEmail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="@string/email_message"
+                android:inputType="textEmailAddress"
+                app:layout_constraintEnd_toEndOf="@+id/parentLastName"
+                app:layout_constraintStart_toStartOf="@+id/parentLastName"
+                app:layout_constraintTop_toBottomOf="@+id/parentLastName" />
+
+            <EditText
+                android:id="@+id/parentPass"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="@string/password_message"
+                android:inputType="textPassword"
+                app:layout_constraintEnd_toEndOf="@+id/parentEmail"
+                app:layout_constraintStart_toStartOf="@+id/parentEmail"
+                app:layout_constraintTop_toBottomOf="@+id/parentEmail" />
+
+            <EditText
+                android:id="@+id/parentPassConfirm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                app:layout_constraintEnd_toEndOf="@+id/parentPass"
+                app:layout_constraintStart_toStartOf="@+id/parentPass"
+                app:layout_constraintTop_toBottomOf="@+id/parentPass" />
+
+
+            <Button
+                android:id="@+id/parentRegister"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/create_account"
+                app:layout_constraintEnd_toEndOf="@+id/parentPassConfirm"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/parentPassConfirm"
+                app:layout_constraintTop_toBottomOf="@+id/editText6"
+                tools:text="@string/create_account" />
+
+            <EditText
+                android:id="@+id/editText6"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="@string/child_name"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="@+id/parentPassConfirm"
+                app:layout_constraintStart_toStartOf="@+id/parentPassConfirm"
+                app:layout_constraintTop_toBottomOf="@+id/parentPassConfirm" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+</FrameLayout>

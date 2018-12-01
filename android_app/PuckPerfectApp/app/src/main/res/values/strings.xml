@@ -187,4 +187,5 @@
     <string name="connectGlove2">L Glove</string>
     <string name="connectCones">Cones</string>
     <string name="progress">Progress</string>
+    <string name="debug">Debug</string>
 </resources>

@@ -28,9 +28,9 @@ public class ProfilePageAdapter extends FragmentPagerAdapter {
 //        Log.i(TAG, "-----Position " + position + "-----");
         switch (position) {
             case 0:
-                // return new StatsFragment();
+                return new StatsFragment();
             case 1:
-                // return new PracticeFragment();
+                return new PracticeFragment();
         }
 
         return null;

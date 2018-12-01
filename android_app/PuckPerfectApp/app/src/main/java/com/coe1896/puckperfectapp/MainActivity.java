@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Log.i(TAG, "----- ON CREATE METHOD INVOKED -----");
+
         // Instantiate the preference editor
         editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
 
@@ -77,6 +79,8 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onResume();
 
+        Log.i(TAG, "----- ON RESUME METHOD INVOKED -----");
+
         queue = MySingleton.getInstance(getApplicationContext()).
                 getRequestQueue();
     }
@@ -97,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void checkToken()
     {
+        Log.i(TAG, "----- CHECK TOKEN METHOD INVOKED -----");
         // GET request to api/token to check token validity
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, tokenURL, null, new Response.Listener<JSONObject>() {
@@ -152,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public void getId()
     {
+        Log.i(TAG, "----- GET ID METHOD INVOKED -----");
         // GET request to api/userid to receive userid
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, idURL, null, new Response.Listener<JSONObject>() {
@@ -200,6 +206,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public void getPlayerInfo(String userId)
     {
+        Log.i(TAG, "----- GET PLAYER INFO METHOD INVOKED -----");
+
         // GET request to players/userId to retrieve user data
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, playersURL + userId, null, new Response.Listener<JSONObject>() {
@@ -215,6 +223,8 @@ public class MainActivity extends AppCompatActivity {
                             // Show view
                             setContentView(R.layout.activity_main);
 
+                            Log.i(TAG, "----- SET CONTENT VIEW -----");
+
                             // Setup navigation drawer
                             Toolbar toolbar = findViewById(R.id.toolbar);
                             setSupportActionBar(toolbar);
@@ -223,6 +233,8 @@ public class MainActivity extends AppCompatActivity {
                             actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
 
                             mDrawerLayout = findViewById(R.id.drawer_layout);
+
+                            Log.i(TAG, "----- SETUP TOOLBAR -----");
 
                             NavigationView navigationView = findViewById(R.id.nav_view);
                             navigationView.setNavigationItemSelectedListener(
@@ -256,6 +268,8 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     });
 
+                            Log.i(TAG, "----- SETUP NAVIGATION VIEW -----");
+
                             mDrawerLayout.addDrawerListener(
                                     new DrawerLayout.DrawerListener() {
                                         @Override
@@ -280,15 +294,20 @@ public class MainActivity extends AppCompatActivity {
                                     }
                             );
 
-                            loadPracticeFragment();
+                            Log.i(TAG, "----- ADDED DRAWER VIEW -----");
+
 
                             mProfilePageAdapter = new ProfilePageAdapter(getSupportFragmentManager(), getApplicationContext());
                             mViewPager = (ViewPager) findViewById(R.id.pager);
                             mViewPager.setAdapter(mProfilePageAdapter);
 
+                            Log.i(TAG, "----- SETUP PAGE ADAPTER -----");
+
                             // Give the TabLayout the ViewPager
                             TabLayout tabLayout = (TabLayout) findViewById(R.id.tablayout);
                             tabLayout.setupWithViewPager(mViewPager);
+
+                            Log.i(TAG, "----- SETUP TAB LAYOUT -----");
 
 
                         }catch(JSONException e)
@@ -310,11 +329,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadSettingsFragment()
-    {
-
-    }
-
-    public void loadPracticeFragment()
     {
 
     }

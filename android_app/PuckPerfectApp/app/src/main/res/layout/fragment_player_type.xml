@@ -1,14 +1,204 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PlayerTypeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:isScrollContainer="true"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
+        android:scrollbars="vertical">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:text="@string/player_info"
+                android:textAlignment="center"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/player_info" />
+
+            <EditText
+                android:id="@+id/playerFirstName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:ems="10"
+                android:hint="@string/first_name"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+
+            <EditText
+                android:id="@+id/playerLastName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="@string/last_name"
+                android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="@+id/playerFirstName"
+                app:layout_constraintStart_toStartOf="@+id/playerFirstName"
+                app:layout_constraintTop_toBottomOf="@+id/playerFirstName" />
+
+            <EditText
+                android:id="@+id/playerEmail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="@string/email_message"
+                android:inputType="textEmailAddress"
+                app:layout_constraintEnd_toEndOf="@+id/playerLastName"
+                app:layout_constraintStart_toStartOf="@+id/playerLastName"
+                app:layout_constraintTop_toBottomOf="@+id/playerLastName" />
+
+            <EditText
+                android:id="@+id/playerPass"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="@string/password_message"
+                android:inputType="textPassword"
+                app:layout_constraintEnd_toEndOf="@+id/playerEmail"
+                app:layout_constraintStart_toStartOf="@+id/playerEmail"
+                app:layout_constraintTop_toBottomOf="@+id/playerEmail" />
+
+            <EditText
+                android:id="@+id/playerPassConfirm"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ems="10"
+                android:hint="@string/confirm_password"
+                android:inputType="textPassword"
+                app:layout_constraintEnd_toEndOf="@+id/playerPass"
+                app:layout_constraintStart_toStartOf="@+id/playerPass"
+                app:layout_constraintTop_toBottomOf="@+id/playerPass" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/age_group"
+                android:textAlignment="textStart"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="@+id/playerPassConfirm"
+                app:layout_constraintTop_toBottomOf="@+id/playerPassConfirm"
+                tools:text="@string/age_group" />
+
+            <Spinner
+                android:id="@+id/playerHockeyLevel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:entries="@array/hockeyLevel"
+                app:layout_constraintEnd_toEndOf="@+id/textView7"
+                app:layout_constraintStart_toStartOf="@+id/textView7"
+                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/skill_level"
+                android:textAlignment="textStart"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="@+id/playerPassConfirm"
+                app:layout_constraintTop_toBottomOf="@+id/playerPassConfirm"
+                tools:text="@string/skill_level" />
+
+            <Spinner
+                android:id="@+id/playerSkillLevel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:entries="@array/skillLevel"
+                app:layout_constraintEnd_toEndOf="@+id/textView8"
+                app:layout_constraintStart_toStartOf="@+id/textView8"
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/handedness"
+                android:textAlignment="center"
+                android:textAppearance="@android:style/TextAppearance.Material.Medium"
+                android:textSize="24sp"
+                app:layout_constraintEnd_toEndOf="@+id/playerSkillLevel"
+                app:layout_constraintStart_toStartOf="@+id/playerHockeyLevel"
+                app:layout_constraintTop_toBottomOf="@+id/playerSkillLevel"
+                tools:text="@string/handedness" />
+
+            <Switch
+                android:id="@+id/playerHand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="@+id/textView5"
+                app:layout_constraintStart_toStartOf="@+id/textView5"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <Button
+                android:id="@+id/playerRegister"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/create_account"
+                app:layout_constraintEnd_toEndOf="@+id/textView5"
+                app:layout_constraintStart_toStartOf="@+id/textView5"
+                app:layout_constraintTop_toBottomOf="@+id/playerHand"
+                tools:text="@string/create_account" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/left_hand"
+                app:layout_constraintBaseline_toBaselineOf="@+id/playerHand"
+                app:layout_constraintEnd_toStartOf="@+id/playerHand"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="@string/left_hand" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/right_hand"
+                app:layout_constraintBaseline_toBaselineOf="@+id/playerHand"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/playerHand"
+                tools:text="@string/right_hand" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
 
 </FrameLayout>

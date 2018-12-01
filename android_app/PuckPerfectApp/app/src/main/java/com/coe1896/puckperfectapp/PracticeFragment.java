@@ -70,4 +70,10 @@ public class PracticeFragment extends Fragment implements View.OnClickListener{
         startActivity(intent);
     }
 
+    @Override
+    public void onStop()
+    {
+        coneDrill.stop();
+        super.onStop();
+    }
 }

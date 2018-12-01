@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";
     private String idURL ="http://www.katiepucci.com/puckperfect/api/userid";
+    private String authURL ="http://www.katiepucci.com/puckperfect/auth";
 
     // Queue for HTTP requests through volley
     RequestQueue queue;
@@ -38,6 +40,19 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        editor = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE).edit();
+
+        // Set up the login form.
+        email = (EditText) findViewById(R.id.usernameText);
+
+        Button signIn = (Button) findViewById(R.id.signInButton);
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getToken();
+            }
+        });
     }
 
     @Override
@@ -47,6 +62,71 @@ public class LoginActivity extends AppCompatActivity {
 
         queue = MySingleton.getInstance(getApplicationContext()).
                 getRequestQueue();
+    }
+
+    /**
+     * Get JWT token with credentials
+     */
+    public void getToken()
+    {
+        Log.i(TAG, "-----Get Token-----");
+
+        queue = MySingleton.getInstance(getApplicationContext()).getRequestQueue();
+
+        // Get email and password from text boxes
+        email = (EditText) findViewById(R.id.usernameText);
+        final EditText password = (EditText) findViewById(R.id.passwordText);
+
+        // Setup data to send with POST request
+        JSONObject json = new JSONObject();
+        try
+        {
+            json.put("username",email.getText().toString());
+            json.put("password",password.getText().toString());
+        }
+        catch(JSONException e)
+        {
+            e.printStackTrace();
+        }
+
+        // POST request to auth to receive JWT token
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, authURL, json, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try{
+                            String token = response.getString("access_token");
+                            if(token.length() > 0)
+                            {
+                                // Store token
+                                editor.putString("jwt_token", token);
+                                editor.apply();
+
+                                // Get user id from token
+                                getId();
+                            }
+                            else
+                            {
+                                loginError();
+                            }
+                        }catch(JSONException e)
+                        {
+                            // TODO: Error handling
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    // If an error occurred, then credentials were wrong
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        loginError();
+                    }
+                });
+
+        jsonObjectRequest.setTag(TAG);
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 
     /**
@@ -106,5 +186,23 @@ public class LoginActivity extends AppCompatActivity {
         Log.i(TAG, "-----Register-----");
         Intent intent = new Intent(this, RegistrationActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Open the main page
+     */
+    public void login()
+    {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Login error message
+     */
+    public void loginError()
+    {
+        Log.i(TAG, "-----LoginActivity Error-----");
+        Toast.makeText(getApplicationContext(),"Incorrect email or password.",Toast.LENGTH_LONG).show();
     }
 }

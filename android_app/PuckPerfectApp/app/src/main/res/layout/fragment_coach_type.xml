@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CoachTypeFragment">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/coachInfo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/coach_info"
+            android:textAlignment="center"
+            android:textAppearance="@android:style/TextAppearance.Material.Medium"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/coach_info" />
+
+        <EditText
+            android:id="@+id/coachFirstName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/first_name"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/coachInfo"
+            app:layout_constraintStart_toStartOf="@+id/coachInfo"
+            app:layout_constraintTop_toBottomOf="@+id/coachInfo" />
+
+        <EditText
+            android:id="@+id/coachLastName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/last_name"
+            android:inputType="textPersonName"
+            app:layout_constraintEnd_toEndOf="@+id/coachFirstName"
+            app:layout_constraintStart_toStartOf="@+id/coachFirstName"
+            app:layout_constraintTop_toBottomOf="@+id/coachFirstName" />
+
+        <EditText
+            android:id="@+id/coachEmail"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/email_message"
+            android:inputType="textEmailAddress"
+            app:layout_constraintEnd_toEndOf="@+id/coachLastName"
+            app:layout_constraintStart_toStartOf="@+id/coachLastName"
+            app:layout_constraintTop_toBottomOf="@+id/coachLastName" />
+
+        <EditText
+            android:id="@+id/coachPass"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/password_message"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="@+id/coachEmail"
+            app:layout_constraintStart_toStartOf="@+id/coachEmail"
+            app:layout_constraintTop_toBottomOf="@+id/coachEmail" />
+
+        <EditText
+            android:id="@+id/coachPassConfirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/confirm_password"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="@+id/coachPass"
+            app:layout_constraintStart_toStartOf="@+id/coachPass"
+            app:layout_constraintTop_toBottomOf="@+id/coachPass" />
+
+
+        <Button
+            android:id="@+id/coachRegister"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/create_account"
+            app:layout_constraintEnd_toEndOf="@+id/coachPassConfirm"
+            app:layout_constraintStart_toStartOf="@+id/coachPassConfirm"
+            app:layout_constraintTop_toBottomOf="@+id/coachPassConfirm"
+            tools:text="@string/create_account" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</FrameLayout>

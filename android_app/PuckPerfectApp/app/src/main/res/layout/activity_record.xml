@@ -6,4 +6,227 @@
     android:layout_height="match_parent"
     tools:context=".RecordActivity">
 
+    <EditText
+        android:id="@+id/secText"
+        android:layout_width="240dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="32dp"
+        android:ems="10"
+        android:hint="sec"
+        android:inputType="time"
+        android:textAlignment="center"
+        android:textColor="@color/counter_text"
+        android:textSize="64sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/minText"
+        app:layout_constraintStart_toEndOf="@+id/colonText" />
+
+    <Button
+        android:id="@+id/startButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:onClick="startTimerHandler"
+        android:text="@string/start_button"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toStartOf="@+id/pauseButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/secText" />
+
+    <Button
+        android:id="@+id/pauseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="pauseTimer"
+        android:text="@string/pause_button"
+        android:textSize="36sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/startButton"
+        app:layout_constraintEnd_toStartOf="@+id/endButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/startButton" />
+
+    <Button
+        android:id="@+id/endButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="endTimer"
+        android:text="@string/end_button"
+        android:textSize="36sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/startButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/pauseButton" />
+
+    <EditText
+        android:id="@+id/minText"
+        android:layout_width="240dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="32dp"
+        android:ems="10"
+        android:hint="min"
+        android:inputType="time"
+        android:textAlignment="center"
+        android:textColor="@color/counter_text"
+        android:textSize="64sp"
+        app:layout_constraintEnd_toStartOf="@+id/colonText"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/colonText"
+        android:layout_width="50dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text=" : "
+        android:textAlignment="center"
+        android:textColor="@color/counter_text"
+        android:textSize="64sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/minText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ScrollView
+        android:id="@+id/coneDebugScroll"
+        android:layout_width="150dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/stickDebugScroll"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <TextView
+            android:id="@+id/coneDebugText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="123dp"
+            tools:layout_editor_absoluteY="526dp" />
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/stickDebugScroll"
+        android:layout_width="150dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/leftGloveDebugScroll"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/coneDebugScroll"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <TextView
+            android:id="@+id/stickDebugText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="123dp"
+            tools:layout_editor_absoluteY="526dp" />
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/leftGloveDebugScroll"
+        android:layout_width="150dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/rightGloveDebugScroll"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/stickDebugScroll"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <TextView
+            android:id="@+id/leftGloveDebugText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="123dp"
+            tools:layout_editor_absoluteY="526dp" />
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/rightGloveDebugScroll"
+        android:layout_width="150dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/leftGloveDebugScroll"
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+        <TextView
+            android:id="@+id/rightGloveDebugText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:layout_editor_absoluteX="123dp"
+            tools:layout_editor_absoluteY="526dp" />
+    </ScrollView>
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/debug"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.456"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coneGridConstraintLayout" />
+
+    <FrameLayout
+        android:id="@+id/coneGridConstraintLayout"
+        android:layout_width="600dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pauseButton">
+
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/coneDebugTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Cones"
+        app:layout_constraintBottom_toTopOf="@+id/coneDebugScroll"
+        app:layout_constraintEnd_toEndOf="@+id/coneDebugScroll"
+        app:layout_constraintStart_toStartOf="@+id/coneDebugScroll" />
+
+    <TextView
+        android:id="@+id/stickDebugTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Stick"
+        app:layout_constraintBottom_toTopOf="@+id/stickDebugScroll"
+        app:layout_constraintEnd_toEndOf="@+id/stickDebugScroll"
+        app:layout_constraintStart_toStartOf="@+id/stickDebugScroll" />
+
+    <TextView
+        android:id="@+id/leftGloveDebugTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Left Glove"
+        app:layout_constraintBottom_toTopOf="@+id/leftGloveDebugScroll"
+        app:layout_constraintEnd_toEndOf="@+id/leftGloveDebugScroll"
+        app:layout_constraintStart_toStartOf="@+id/leftGloveDebugScroll" />
+
+    <TextView
+        android:id="@+id/rightGloveDebugTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Right Glove"
+        app:layout_constraintBottom_toTopOf="@+id/rightGloveDebugScroll"
+        app:layout_constraintEnd_toEndOf="@+id/rightGloveDebugScroll"
+        app:layout_constraintStart_toStartOf="@+id/rightGloveDebugScroll" />
+
+
 </android.support.constraint.ConstraintLayout>
