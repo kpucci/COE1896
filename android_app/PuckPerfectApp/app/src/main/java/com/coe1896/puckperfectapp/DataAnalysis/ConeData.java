@@ -12,13 +12,13 @@ public class ConeData implements PuckPerfectData{
     SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
     public ArrayList<String> times = new ArrayList<>();
-    public ArrayList<Short> distC1 = new ArrayList<>();
-    public ArrayList<Short> distC2 = new ArrayList<>();
-    public ArrayList<Short> distC3 = new ArrayList<>();
-    public ArrayList<Short> distC4 = new ArrayList<>();
-    public ArrayList<Short> distC5 = new ArrayList<>();
-    public ArrayList<Short> distC6 = new ArrayList<>();
-    public ArrayList<Short> distC7 = new ArrayList<>();
+    public ArrayList<Integer> distC1 = new ArrayList<>();
+    public ArrayList<Integer> distC2 = new ArrayList<>();
+    public ArrayList<Integer> distC3 = new ArrayList<>();
+    public ArrayList<Integer> distC4 = new ArrayList<>();
+    public ArrayList<Integer> distC5 = new ArrayList<>();
+    public ArrayList<Integer> distC6 = new ArrayList<>();
+    public ArrayList<Integer> distC7 = new ArrayList<>();
 
     public void storeData(String input)
     {
@@ -26,41 +26,53 @@ public class ConeData implements PuckPerfectData{
         fmt.setCalendar(cal);
         String currTime = fmt.format(cal.getTime());
 
-        String inputSplit[] = input.split(" ");
-        short d1 = (short) 0, d2 = (short) 0, d3 = (short) 0, d4 = (short) 0,
-                d5 = (short) 0, d6 = (short) 0, d7 = (short) 0;
+        int d1 = 0, d2 = 0, d3 = 0, d4 = 0,
+                d5 = 0, d6 = 0, d7 = 0;
 
-        if(inputSplit.length > 6)
+        String[] inputSplitNL, inputSplitSp;
+
+        if(input.contains("\n"))
         {
-            if(!inputSplit[0].equals(""))
-                d1 = Short.parseShort(inputSplit[0]);
-            if(!inputSplit[1].equals(""))
-                d2 = Short.parseShort(inputSplit[1]);
-            if(!inputSplit[2].equals(""))
-                d3 = Short.parseShort(inputSplit[2]);
-            if(!inputSplit[3].equals(""))
-                d4 = Short.parseShort(inputSplit[3]);
-            if(!inputSplit[4].equals(""))
-                d5 = Short.parseShort(inputSplit[4]);
-            if(!inputSplit[5].equals(""))
-                d6 = Short.parseShort(inputSplit[5]);
-            if(!inputSplit[6].equals(""))
-                d7 = Short.parseShort(inputSplit[6]);
-        }
+            inputSplitNL = input.split("\n");
 
-        times.add(currTime);
-        distC1.add(d1);
-        distC2.add(d2);
-        distC3.add(d3);
-        distC4.add(d4);
-        distC5.add(d5);
-        distC6.add(d6);
-        distC7.add(d7);
+            if(inputSplitNL.length > 0) {
+                inputSplitSp = inputSplitNL[0].split(" ");
+
+                if (inputSplitSp.length == 7) {
+                    if (!inputSplitSp[0].equals(""))
+                        d1 = Integer.parseInt(inputSplitSp[0]);
+                    if (!inputSplitSp[1].equals(""))
+                        d2 = Integer.parseInt(inputSplitSp[1]);
+                    if (!inputSplitSp[2].equals(""))
+                        d3 = Integer.parseInt(inputSplitSp[2]);
+                    if (!inputSplitSp[3].equals(""))
+                        d4 = Integer.parseInt(inputSplitSp[3]);
+                    if (!inputSplitSp[4].equals(""))
+                        d5 = Integer.parseInt(inputSplitSp[4]);
+                    if (!inputSplitSp[5].equals(""))
+                        d6 = Integer.parseInt(inputSplitSp[5]);
+                    if (!inputSplitSp[6].equals(""))
+                        d7 = Integer.parseInt(inputSplitSp[6]);
+                }
+
+                times.add(currTime);
+                distC1.add(d1);
+                distC2.add(d2);
+                distC3.add(d3);
+                distC4.add(d4);
+                distC5.add(d5);
+                distC6.add(d6);
+                distC7.add(d7);
+            }
+        }
     }
 
     public String printLastDataPoint()
     {
-        String output = "Time: " + times.get(times.size()-1) + "\n" +
+        String output = "";
+
+        if(times.size() > 0)
+            output = "Time: " + times.get(times.size()-1) + "\n" +
                 "Cone 1: " + distC1.get(distC1.size()-1) + "\n" +
                 "Cone 2: " + distC2.get(distC2.size()-1) + "\n" +
                 "Cone 3: " + distC3.get(distC3.size()-1) + "\n" +
@@ -72,3 +84,4 @@ public class ConeData implements PuckPerfectData{
         return output;
     }
 }
+

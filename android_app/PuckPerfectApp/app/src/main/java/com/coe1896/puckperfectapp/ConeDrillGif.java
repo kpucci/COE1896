@@ -36,7 +36,6 @@ public class ConeDrillGif extends SurfaceView implements SurfaceHolder.Callback,
     private static int[] x_coords = {670, 725, 820, 955, 1070, 1125, 1100, 975, 800, 670, 545, 345, 230, 235, 355, 500, 610};
     private static int[] y_coords = {285, 215, 115, 75, 125, 235, 385, 485, 425, 285, 135, 85, 195, 360, 485, 465, 360};
 
-
     private int index = 0;
 
     private static String TAG = "CONE_DRILL_GIF";

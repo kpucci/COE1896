@@ -197,18 +197,44 @@ public class RecordActivity extends AppCompatActivity {
         Log.i(TAG, "----- START MODULES METHOD INVOKED -----");
         for(PuckPerfectDevice device : devices)
         {
-            try
+            if(device != null)
+                device.startAcquire();
+        }
+    }
+
+    /**
+     * Send start character to bluetooth modules
+     */
+    private void startModulesDebug()
+    {
+        Log.i(TAG, "----- START MODULES METHOD INVOKED -----");
+        for(PuckPerfectDevice device : devices)
+        {
+            if(device != null)
             {
-                if(device != null)
-                    device.startAcquire();
-            }
-            catch(IOException e)
-            {
-                // TODO: Error handling
-                e.printStackTrace();
+                if(device.isConnected())
+                {
+                    // DEBUG MODE
+                    switch(device.getType())
+                    {
+                        case CONES:
+                            device.startAcquire(coneDebug, coneScroll);
+                            break;
+                        case STICK:
+                            device.startAcquire(stickDebug, stickScroll);
+                            break;
+                        case L_GLOVE:
+                            device.startAcquire(leftGloveDebug, leftGloveScroll);
+                            break;
+                        case R_GLOVE:
+                            device.startAcquire(rightGloveDebug, rightGloveScroll);
+                            break;
+                    }
+                }
             }
         }
     }
+
 
     /**
      * Send end character to bluetooth modules
@@ -218,16 +244,8 @@ public class RecordActivity extends AppCompatActivity {
         Log.i(TAG, "----- STOP MODULES METHOD INVOKED -----");
         for(PuckPerfectDevice device : devices)
         {
-            try
-            {
-                if(device != null)
-                    device.stopAcquire();
-            }
-            catch(IOException e)
-            {
-                // TODO: Error handling
-                e.printStackTrace();
-            }
+            if(device != null)
+                device.stopAcquire();
         }
     }
 
@@ -290,7 +308,7 @@ public class RecordActivity extends AppCompatActivity {
         }
 
         Log.i(TAG, "----- START MODULES -----");
-        startModules();
+        startModulesDebug();
 
         countDownTimer = new CountDownTimer(timeInSec * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
@@ -513,53 +531,6 @@ public class RecordActivity extends AppCompatActivity {
         protected void onPostExecute(Void result)
         {
             super.onPostExecute(result);
-
-            Log.i(TAG, "----- CONNECT DEVICES: ON POST EXECUTE METHOD INVOKED -----");
-
-            String msg = "";
-            String titleString = "";
-
-            if(connectSuccessful)
-            {
-                titleString = "Success";
-                msg = "Connected to all PuckPerfect devices";
-            }
-            else
-            {
-                titleString = "Connection Error";
-                msg = "Could not connect to:\n";
-            }
-
-            for(PuckPerfectDevice device : devices)
-            {
-                if(device != null)
-                {
-                    if(!device.isConnected())
-                        msg += "\n\t" + device.getName().trim();
-                    else
-                    {
-                        // DEBUG MODE
-                        switch(device.getType())
-                        {
-                            case CONES:
-                                device.createInputReader(coneDebug, coneScroll);
-                                break;
-                            case STICK:
-                                device.createInputReader(stickDebug, stickScroll);
-                                break;
-                            case L_GLOVE:
-                                device.createInputReader(leftGloveDebug, leftGloveScroll);
-                                break;
-                            case R_GLOVE:
-                                device.createInputReader(rightGloveDebug, rightGloveScroll);
-                                break;
-                        }
-                    }
-                }
-            }
-
-            Log.i(TAG, msg);
-
             progressDialog.dismiss();
         }
     }
@@ -590,4 +561,96 @@ public class RecordActivity extends AppCompatActivity {
             device.setConnectionState(false);
         }
     }
+
+    // ---------- Thread for checking bluetooth connections ----------
+
+    // private class BluetoothMonitor implements Runnable {
+    //
+    //     private boolean bStop = false;
+    //     private Thread t;
+    //     private TextView debugTextView = null;
+    //     private ScrollView debugScrollView = null;
+    //
+    //     public BluetoothMonitor() {
+    //         Log.i(TAG, "----- INPUT READER: CONSTRUCTOR INVOKED -----");
+    //         t = new Thread(this, "Input Thread");
+    //         t.start();
+    //     }
+    //
+    //     public BluetoothMonitor(TextView debugTextView, ScrollView debugScrollView) {
+    //         Log.i(TAG, "----- INPUT READER: CONSTRUCTOR 2 INVOKED -----");
+    //         this.debugTextView = debugTextView;
+    //         this.debugScrollView = debugScrollView;
+    //
+    //         t = new Thread(this, "Input Thread");
+    //         t.start();
+    //     }
+    //
+    //     public boolean isRunning() {
+    //         return t.isAlive();
+    //     }
+    //
+    //     @Override
+    //     public void run() {
+    //         Log.i(TAG, "----- INPUT READER: RUNNING -----");
+    //         InputStream inputStream;
+    //
+    //         try {
+    //             inputStream = socket.getInputStream();
+    //             while (!bStop) {
+    //                 byte[] buffer = new byte[256];
+    //                 if (inputStream != null && inputStream.available() > 0) {
+    //                     inputStream.read(buffer);
+    //                     int i = 0;
+    //                     /*
+    //                      * This is needed because new String(buffer) is taking the entire buffer i.e. 256 chars on Android 2.3.4 http://stackoverflow.com/a/8843462/1287554
+    //                      */
+    //                     for (i = 0; i < buffer.length && buffer[i] != 0; i++) {
+    //                     }
+    //                     final String strInput = new String(buffer, 0, i);
+    //                     data.storeData(strInput);
+    //
+    //                     // FOR DEBUG PURPOSES ONLY
+    //                     if(debugTextView != null)
+    //                     {
+    //                         final String dataDebug = data.printLastDataPoint();
+    //
+    //
+    //                         debugTextView.post(new Runnable() {
+    //                             @Override
+    //                             public void run() {
+    //                                 debugTextView.append(dataDebug);
+    //
+    //                                 int txtLength = debugTextView.getEditableText().length();
+    //                                 if(txtLength > maxChars){
+    //                                     debugTextView.getEditableText().delete(0, txtLength - maxChars);
+    //                                 }
+    //
+    //                                 debugScrollView.post(new Runnable() { // Snippet from http://stackoverflow.com/a/4612082/1287554
+    //                                     @Override
+    //                                     public void run() { debugScrollView.fullScroll(View.FOCUS_DOWN);
+    //                                     }
+    //                                 });
+    //                             }
+    //                         });
+    //
+    //                     }
+    //
+    //                 }
+    //                 Thread.sleep(500);
+    //             }
+    //         } catch (IOException e) {
+    //             e.printStackTrace();
+    //         } catch (InterruptedException e) {
+    //             e.printStackTrace();
+    //         }
+    //
+    //     }
+    //
+    //     public void stop() {
+    //         Log.i(TAG, "----- INPUT READER: STOP METHOD INVOKED -----");
+    //         bStop = true;
+    //     }
+    //
+    // }
 }

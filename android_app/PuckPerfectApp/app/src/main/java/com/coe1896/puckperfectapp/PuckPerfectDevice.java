@@ -134,14 +134,33 @@ public class PuckPerfectDevice {
         this.socket = socket;
     }
 
-    public void createInputReader(){
+    public void startAcquire(){
+        if(this.reader != null && this.reader.isRunning())
+            this.reader.stop();
+
         this.reader = new InputReader();
     }
 
-    public void createInputReader(TextView debugTextView, ScrollView debugScrollView)
+    public void startAcquire(TextView debugTextView, ScrollView debugScrollView)
     {
+        if(this.reader != null && this.reader.isRunning())
+            this.reader.stop();
+
         this.reader = new InputReader(debugTextView, debugScrollView);
     }
+
+    /**
+     * Stop the input thread
+     */
+    public void stopAcquire()
+    {
+        Log.i(TAG, "----- STOP ACQUIRE METHOD INVOKED -----");
+        if(this.reader != null && this.reader.isRunning())
+            this.reader.stop();
+
+        this.reader = null;
+    }
+
 
     public void setConnectionState(boolean connectionState)
     {
@@ -186,41 +205,19 @@ public class PuckPerfectDevice {
         }
     }
 
-    /**
-     * Send start character to device
-     */
-    public void startAcquire() throws IOException
-    {
-        Log.i(TAG, "----- START ACQUIRE METHOD INVOKED -----");
-        if(isConnected())
-            socket.getOutputStream().write('s');
-    }
-
-    /**
-     * Send end character to device
-     */
-    public void stopAcquire() throws IOException
-    {
-        Log.i(TAG, "----- STOP ACQUIRE METHOD INVOKED -----");
-        if(isConnected())
-            socket.getOutputStream().write('e');
-    }
-
 
     @Override
     public String toString()
     {
-        String output = "PuckPerfect Device: " + device.getName() + "\n" +
-                        "   Connection Status: " + connectionState + "\n";
-
-        return output;
+        return "PuckPerfect Device: " + device.getName() + "\n" +
+                "   Connection Status: " + connectionState + "\n";
     }
 
     // ----- Input Stream Reader Inner Class -----
 
     private class InputReader implements Runnable {
 
-        private boolean bStop = false;
+        private volatile boolean bStop = false;
         private Thread t;
         private TextView debugTextView = null;
         private ScrollView debugScrollView = null;
@@ -252,7 +249,7 @@ public class PuckPerfectDevice {
             try {
                 inputStream = socket.getInputStream();
                 while (!bStop) {
-                    byte[] buffer = new byte[24];
+                    byte[] buffer = new byte[256];
                     if (inputStream != null && inputStream.available() > 0) {
                         inputStream.read(buffer);
                         int i = 0;
@@ -269,11 +266,11 @@ public class PuckPerfectDevice {
                         {
                             final String dataDebug = data.printLastDataPoint();
 
-
                             debugTextView.post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    debugTextView.append(dataDebug);
+                                    if(dataDebug != null && !dataDebug.isEmpty())
+                                        debugTextView.append(dataDebug);
 
                                     int txtLength = debugTextView.getEditableText().length();
                                     if(txtLength > maxChars){
