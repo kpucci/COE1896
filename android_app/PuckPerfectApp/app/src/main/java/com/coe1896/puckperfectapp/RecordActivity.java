@@ -4,7 +4,10 @@ import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
@@ -41,6 +44,8 @@ public class RecordActivity extends AppCompatActivity {
     // Bluetooth stuff
     BluetoothAdapter BTAdapter;
     public PuckPerfectDevice[] devices = new PuckPerfectDevice[4];
+
+    private BluetoothMonitor btMonitor;
 
     private static final int BT_ENABLE_REQUEST = 10;
 
@@ -145,18 +150,8 @@ public class RecordActivity extends AppCompatActivity {
 
         Log.i(TAG, "----- ON START METHOD INVOKED -----");
 
-        boolean doConnect = false;
-
-        for(PuckPerfectDevice device : devices)
-        {
-            if(device != null)
-                Log.i(TAG, device.toString());
-            if(device != null && !device.isConnected())
-                doConnect = true;
-        }
-
-        if(doConnect)
-            new ConnectDevices().execute();
+        if(this.btMonitor == null || !this.btMonitor.isRunning())
+            btMonitor = new BluetoothMonitor();
 
     }
 
@@ -185,6 +180,12 @@ public class RecordActivity extends AppCompatActivity {
                 disconnectTask.device = device;
                 disconnectTask.execute();
             }
+
+        if(this.btMonitor != null && this.btMonitor.isRunning())
+        {
+            this.btMonitor.stop();
+            btMonitor = null;
+        }
 
         super.onStop();
     }
@@ -237,7 +238,7 @@ public class RecordActivity extends AppCompatActivity {
 
 
     /**
-     * Send end character to bluetooth modules
+     * Stop acquiring data from modules
      */
     private void stopModules()
     {
@@ -297,6 +298,10 @@ public class RecordActivity extends AppCompatActivity {
     private void startTimer(int seconds, int minutes)
     {
         Log.i(TAG, "----- START TIMER METHOD INVOKED -----");
+
+        // Clear debug text
+        clearDebugText();
+
         int timeInSec = (minutes * 60) + seconds;
         numError1 = 0;
         numError2 = 0;
@@ -319,27 +324,7 @@ public class RecordActivity extends AppCompatActivity {
 
             }
             public void onFinish() {
-                // Tell bluetooth modules to stop acquiring
-                stopModules();
-
-                secTime.setText(String.format("%02d",practiceSec));
-                minTime.setText(String.format("%02d",practiceMin));
-
-                startButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        startTimerHandler(view);
-                    }
-                });
-
-                startButton.setEnabled(true);
-                pauseButton.setEnabled(false);
-                endButton.setEnabled(false);
-
-                secTime.setEnabled(true);
-                minTime.setEnabled(true);
-
-                calculateScore();
+                endTimer();
             }
         };
         countDownTimer.start();
@@ -388,7 +373,12 @@ public class RecordActivity extends AppCompatActivity {
      * End timer button handler
      * @param view
      */
-    public void endTimer(View view)
+    public void endTimerHandler(View view)
+    {
+        endTimer();
+    }
+
+    public void endTimer()
     {
         stopModules();
 
@@ -411,6 +401,27 @@ public class RecordActivity extends AppCompatActivity {
         minTime.setEnabled(true);
 
         calculateScore();
+
+        endDrill();
+    }
+
+    // TODO: Add option to save or not
+    public void endDrill()
+    {
+        for(PuckPerfectDevice device : devices)
+        {
+            if(device != null && device.isConnected())
+                device.exportData(this);
+        }
+    }
+
+
+    public void clearDebugText()
+    {
+        if(leftGloveDebug != null) leftGloveDebug.setText("");
+        if(rightGloveDebug != null) rightGloveDebug.setText("");
+        if(coneDebug != null) coneDebug.setText("");
+        if(stickDebug != null) stickDebug.setText("");
     }
 
 
@@ -448,7 +459,11 @@ public class RecordActivity extends AppCompatActivity {
                     Log.i(TAG, name);
                     int index = DEVICE_TYPE.getIndexFromName(name);
                     if(index >= 0)
+                    {
                         devices[index] = new PuckPerfectDevice(device);
+                        devices[index].setContext(getApplicationContext());
+                    }
+
                 }
             }
             return null;
@@ -460,78 +475,11 @@ public class RecordActivity extends AppCompatActivity {
 
             Log.i(TAG, "----- SEARCH DEVICES: ON POST EXECUTE METHOD INVOKED -----");
 
-            // if(deviceTable.contains("CONES"))
-            //     devices[DEVICE_TYPE.CONES.getIndex()] = new PuckPerfectDevice(deviceTable.get("CONES"));
-            // else
-            //     Toast.makeText(getApplicationContext(), "WARNING: Could not find paired module for cones. Please pair the device.", Toast.LENGTH_SHORT).show();
+            if(btMonitor != null && btMonitor.isRunning())
+                btMonitor.stop();
 
-            // if(deviceTable.contains("STICK"))
-            // {
-            //     devices[DEVICE_TYPE.STICK.getIndex()] = new PuckPerfectDevice(deviceTable.get("STICK"));
-            //     Log.i(TAG, devices[DEVICE_TYPE.STICK.getIndex()].toString());
-            // }
-            // else
-            // {
-            //     Log.i(TAG, "~~~~~ COULD NOT FIND STICK ~~~~~");
-            //     Toast.makeText(getApplicationContext(), "WARNING: Could not find paired module for stick. Please pair the device.", Toast.LENGTH_SHORT).show();
-            // }
-            //
-            // if(deviceTable.contains("L_GLOVE"))
-            //     devices[DEVICE_TYPE.L_GLOVE.getIndex()] = new PuckPerfectDevice(deviceTable.get("L_GLOVE"));
-            // else
-            //     Toast.makeText(getApplicationContext(), "WARNING: Could not find paired module for left glove. Please pair the device.", Toast.LENGTH_SHORT).show();
-            //
-            // if(deviceTable.contains("R_GLOVE"))
-            //     devices[DEVICE_TYPE.R_GLOVE.getIndex()] = new PuckPerfectDevice(deviceTable.get("R_GLOVE"));
-            // else
-            //     Toast.makeText(getApplicationContext(), "WARNING: Could not find paired module for right glove. Please pair the device.", Toast.LENGTH_SHORT).show();
 
-            new ConnectDevices().execute();
-        }
-    }
-
-    /**
-     * Connect the devices
-     */
-    private class ConnectDevices extends AsyncTask<Void, Integer, Void>
-    {
-
-        private boolean connectSuccessful = true;
-
-        @Override
-        protected void onPreExecute()
-        {
-            Log.i(TAG, "----- CONNECT DEVICES: ON PRE EXECUTE METHOD INVOKED -----");
-            if(devices[0] != null || devices[1] != null || devices[2] != null || devices[3] != null)
-               progressDialog = ProgressDialog.show(RecordActivity.this, "Connecting", "Connecting to devices");// http://stackoverflow.com/a/11130220/1287554
-            else
-                progressDialog = ProgressDialog.show(RecordActivity.this, "Error", "No paired devices. Please pair the PuckPerfect devices.");
-        }
-
-        @Override
-        protected Void doInBackground(Void... params)
-        {
-            Log.i(TAG, "----- CONNECT DEVICES: DO IN BACKGROUND METHOD INVOKED -----");
-            for(PuckPerfectDevice device : devices)
-            {
-                if(device != null)
-                {
-                    device.connect();
-                    if(!device.isConnected())
-                        connectSuccessful = false;
-                }
-                else
-                    connectSuccessful = false;
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void result)
-        {
-            super.onPostExecute(result);
-            progressDialog.dismiss();
+            btMonitor = new BluetoothMonitor();
         }
     }
 
@@ -564,93 +512,59 @@ public class RecordActivity extends AppCompatActivity {
 
     // ---------- Thread for checking bluetooth connections ----------
 
-    // private class BluetoothMonitor implements Runnable {
-    //
-    //     private boolean bStop = false;
-    //     private Thread t;
-    //     private TextView debugTextView = null;
-    //     private ScrollView debugScrollView = null;
-    //
-    //     public BluetoothMonitor() {
-    //         Log.i(TAG, "----- INPUT READER: CONSTRUCTOR INVOKED -----");
-    //         t = new Thread(this, "Input Thread");
-    //         t.start();
-    //     }
-    //
-    //     public BluetoothMonitor(TextView debugTextView, ScrollView debugScrollView) {
-    //         Log.i(TAG, "----- INPUT READER: CONSTRUCTOR 2 INVOKED -----");
-    //         this.debugTextView = debugTextView;
-    //         this.debugScrollView = debugScrollView;
-    //
-    //         t = new Thread(this, "Input Thread");
-    //         t.start();
-    //     }
-    //
-    //     public boolean isRunning() {
-    //         return t.isAlive();
-    //     }
-    //
-    //     @Override
-    //     public void run() {
-    //         Log.i(TAG, "----- INPUT READER: RUNNING -----");
-    //         InputStream inputStream;
-    //
-    //         try {
-    //             inputStream = socket.getInputStream();
-    //             while (!bStop) {
-    //                 byte[] buffer = new byte[256];
-    //                 if (inputStream != null && inputStream.available() > 0) {
-    //                     inputStream.read(buffer);
-    //                     int i = 0;
-    //                     /*
-    //                      * This is needed because new String(buffer) is taking the entire buffer i.e. 256 chars on Android 2.3.4 http://stackoverflow.com/a/8843462/1287554
-    //                      */
-    //                     for (i = 0; i < buffer.length && buffer[i] != 0; i++) {
-    //                     }
-    //                     final String strInput = new String(buffer, 0, i);
-    //                     data.storeData(strInput);
-    //
-    //                     // FOR DEBUG PURPOSES ONLY
-    //                     if(debugTextView != null)
-    //                     {
-    //                         final String dataDebug = data.printLastDataPoint();
-    //
-    //
-    //                         debugTextView.post(new Runnable() {
-    //                             @Override
-    //                             public void run() {
-    //                                 debugTextView.append(dataDebug);
-    //
-    //                                 int txtLength = debugTextView.getEditableText().length();
-    //                                 if(txtLength > maxChars){
-    //                                     debugTextView.getEditableText().delete(0, txtLength - maxChars);
-    //                                 }
-    //
-    //                                 debugScrollView.post(new Runnable() { // Snippet from http://stackoverflow.com/a/4612082/1287554
-    //                                     @Override
-    //                                     public void run() { debugScrollView.fullScroll(View.FOCUS_DOWN);
-    //                                     }
-    //                                 });
-    //                             }
-    //                         });
-    //
-    //                     }
-    //
-    //                 }
-    //                 Thread.sleep(500);
-    //             }
-    //         } catch (IOException e) {
-    //             e.printStackTrace();
-    //         } catch (InterruptedException e) {
-    //             e.printStackTrace();
-    //         }
-    //
-    //     }
-    //
-    //     public void stop() {
-    //         Log.i(TAG, "----- INPUT READER: STOP METHOD INVOKED -----");
-    //         bStop = true;
-    //     }
-    //
-    // }
+    private class BluetoothMonitor implements Runnable {
+
+        private volatile boolean bStop = false;
+        private Thread t;
+        private TextView debugTextView = null;
+        private ScrollView debugScrollView = null;
+
+        public BluetoothMonitor() {
+            Log.i(TAG, "----- BLUETOOTH MONITOR: CONSTRUCTOR INVOKED -----");
+            t = new Thread(this, "Input Thread");
+            t.start();
+        }
+
+        public boolean isRunning() {
+            return t.isAlive();
+        }
+
+        @Override
+        public void run() {
+            Log.i(TAG, "----- BLUETOOTH MONITOR: RUNNING -----");
+
+            try
+            {
+                while(!bStop)
+                {
+                    for(PuckPerfectDevice device : devices)
+                    {
+                        // Check if device is connected
+                        if(device != null && !device.isConnected())
+                        {
+                            Log.i(TAG, device.getName() + " is not connected. Connecting now");
+                            // If not connected, try to connect it
+                            device.connect();
+                        }
+                        else if(device != null && device.isConnected())
+                        {
+                            Log.i(TAG, device.getName() + " is connected.");
+                        }
+                    }
+
+                    Thread.sleep(15000); // Check every 15s
+                }
+            }
+            catch(InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+
+        public void stop() {
+            Log.i(TAG, "----- BLUETOOTH MONITOR: STOP METHOD INVOKED -----");
+            bStop = true;
+        }
+
+    }
 }
