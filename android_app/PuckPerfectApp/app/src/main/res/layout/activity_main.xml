@@ -12,15 +12,16 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/toolbar"
             android:background="@color/colorPrimary"
+            android:fitsSystemWindows="true"
             android:minHeight="?attr/actionBarSize"
+            android:paddingTop="8dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:titleTextAppearance="@style/CustomTitleText"
-            android:fitsSystemWindows="true">
+            app:titleTextAppearance="@style/CustomTitleText">
 
         </android.support.v7.widget.Toolbar>
 

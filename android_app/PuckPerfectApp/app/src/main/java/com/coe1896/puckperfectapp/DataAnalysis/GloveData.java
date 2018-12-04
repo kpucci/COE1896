@@ -84,6 +84,47 @@ public class GloveData implements PuckPerfectData{
         }
     }
 
+    public void storeData(byte[] buffer)
+    {
+        cal = new GregorianCalendar(TimeZone.getTimeZone("EST"));
+        fmt.setCalendar(cal);
+        String currTime = fmt.format(cal.getTime());
+
+        float yaw, pitch, roll;
+        int pressure;
+
+        try
+        {
+            // 0-7
+            Log.i(TAG, "1: " + (new String(buffer, 0, 8)).trim());
+            yaw = Float.parseFloat((new String(buffer, 0, 8)).trim());
+
+            // 8-
+            Log.i(TAG, "2: " + (new String(buffer, 8, 8)).trim());
+            pitch = Float.parseFloat((new String(buffer, 8, 8)).trim());
+
+            Log.i(TAG, "3: " + (new String(buffer, 16, 8)).trim());
+            roll = Float.parseFloat((new String(buffer, 16, 8)).trim());
+
+            Log.i(TAG, "4: " + (new String(buffer, 24, 5)).trim());
+            pressure = Integer.parseInt((new String(buffer, 24, 5)).trim());
+
+            if(yaw != 0 || pitch != 0 || roll != 0)
+            {
+                times.add(currTime);
+                yawVals.add(yaw);
+                pitchVals.add(pitch);
+                rollVals.add(roll);
+                pressureVals.add(pressure);
+            }
+        }
+        catch (NumberFormatException e)
+        {
+            Log.i(TAG, "GLOVE: Parse Error");
+            e.printStackTrace();
+        }
+    }
+
     public String printLastDataPoint()
     {
         String output = "Time: " + times.get(times.size()-1) + "\n" +

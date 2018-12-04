@@ -21,10 +21,10 @@ import java.util.UUID;
 public class PuckPerfectDevice {
 
     public enum DEVICE_TYPE {
-        CONES(0, 24),
-        STICK(1, 8),
-        R_GLOVE(2, 28),
-        L_GLOVE(3, 28);
+        CONES(0, 256),
+        STICK(1, 4),
+        R_GLOVE(2, 29),
+        L_GLOVE(3, 29);
 
         private final int index;
         private final int buffSize;
@@ -271,7 +271,7 @@ public class PuckPerfectDevice {
         private Thread t;
         private TextView debugTextView = null;
         private ScrollView debugScrollView = null;
-        private boolean connectedOnce = false;
+        private int timeout = 0;
 
         public InputReader() {
             Log.i(TAG, "----- INPUT READER: CONSTRUCTOR INVOKED -----");
@@ -302,11 +302,10 @@ public class PuckPerfectDevice {
                 {
                     inputStream = socket.getInputStream();
                     while (!bStop) {
-                        byte[] buffer = new byte[256]; // fallback
+                        byte[] buffer = new byte[type.getBuffSize()]; // fallback
 
                         if (inputStream != null && inputStream.available() > 0) {
-                            connectedOnce = true;
-
+                            timeout = 0;
                             inputStream.read(buffer);
                             int i = 0;
                             /*
@@ -316,7 +315,8 @@ public class PuckPerfectDevice {
                             }
                             final String strInput = new String(buffer, 0, i);
 
-                            // Log.i(TAG, "Input from " + device.getName().trim() + ": " + strInput);
+                            if(type == DEVICE_TYPE.L_GLOVE)
+                                Log.i(TAG, "Input from " + device.getName().trim() + ": " + strInput);
 
                             // Check if string is null or empty --> if so, lost connection
                             if(strInput.isEmpty())
@@ -328,7 +328,8 @@ public class PuckPerfectDevice {
                             // Check if we should be acquiring data
                             if(acquire)
                             {
-                                data.storeData(strInput);
+                                // data.storeData(strInput);
+                                data.storeData(buffer);
 
                                 // FOR DEBUG PURPOSES ONLY
                                 if(debugTextView != null)
@@ -362,13 +363,19 @@ public class PuckPerfectDevice {
                             }
 
                         }
-                        else if(inputStream != null && inputStream.available() <= 0 && connectedOnce)
+                        else if(inputStream != null && inputStream.available() <= 0)
                         {
+                            timeout++;
+                            // Log.i(TAG, device.getName().trim() + ": Timeout " + timeout);
+                        }
+                        else if(timeout > 5)
+                        {
+                            timeout = 0;
                             Log.i(TAG, "Lost connection to " + device.getName().trim());
                             connectionState = false;
                             this.stop();
                         }
-                        Thread.sleep(500); // TODO: Change back to 250
+                        Thread.sleep(250); // TODO: Change back to 250
                     }
                 }
 

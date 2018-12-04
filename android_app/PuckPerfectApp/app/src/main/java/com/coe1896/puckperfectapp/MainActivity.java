@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         // Attempt to login using stored token (if it exists)
         checkToken();
 
-        setContentView(R.layout.activity_main);
+        // setContentView(R.layout.activity_main);
 
         MainActivity.verifyStoragePermissions(this);
     }
@@ -85,6 +86,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart()
     {
         super.onStart();
+    }
+
+    @Override
+    protected void onRestart()
+    {
+        super.onRestart();
     }
 
     @Override
@@ -121,6 +128,21 @@ public class MainActivity extends AppCompatActivity {
                     REQUEST_EXTERNAL_STORAGE
             );
         }
+    }
+
+    /**
+     * Open navigation drawer when nav button is pressed
+     * @param item
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /**

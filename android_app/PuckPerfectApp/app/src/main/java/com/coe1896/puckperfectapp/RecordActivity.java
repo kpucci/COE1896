@@ -10,13 +10,18 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.CountDownTimer;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -86,19 +91,27 @@ public class RecordActivity extends AppCompatActivity {
     private int numError1 = 0;
     private int numError2 = 0;
 
+    private PopupWindow mPopupWindow;
+    private Context mContext;
+    private ConstraintLayout mConstraintLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
+        mContext = getApplicationContext();
+
         Log.i(TAG, "----- ON CREATE METHOD INVOKED -----");
 
         // Create the SurfaceViewThread object.
-        coneMap = new ConeMap(getApplicationContext());
+        // coneMap = new ConeMap(getApplicationContext());
 
         // Get frame layout
-        FrameLayout coneLayout = (FrameLayout) findViewById(R.id.coneGridConstraintLayout);
-        coneLayout.addView(coneMap);
+        // FrameLayout coneLayout = (FrameLayout) findViewById(R.id.coneGridConstraintLayout);
+        // coneLayout.addView(coneMap);
+
+        mConstraintLayout = (ConstraintLayout) findViewById(R.id.constraintLayout);
 
         secTime = (TextView) findViewById(R.id.secText);
         minTime = (TextView) findViewById(R.id.minText);
@@ -299,6 +312,8 @@ public class RecordActivity extends AppCompatActivity {
     {
         Log.i(TAG, "----- START TIMER METHOD INVOKED -----");
 
+        btMonitor.stop();
+
         // Clear debug text
         clearDebugText();
 
@@ -403,9 +418,58 @@ public class RecordActivity extends AppCompatActivity {
         calculateScore();
 
         endDrill();
+
+        btMonitor = new BluetoothMonitor();
+
+        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View customView = inflater.inflate(R.layout.save_practice_popup,null);
+
+        mPopupWindow = new PopupWindow(
+                customView,
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        // Get a reference for the custom view close button
+        Button cancelButton = (Button) customView.findViewById(R.id.cancelButton);
+
+        // Set a click listener for the popup window close button
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Dismiss the popup window
+                mPopupWindow.dismiss();
+            }
+        });
+
+        // Get a reference for the custom view close button
+        Button discardButton = (Button) customView.findViewById(R.id.discardButton);
+
+        // Set a click listener for the popup window close button
+        discardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Dismiss the popup window
+                mPopupWindow.dismiss();
+            }
+        });
+
+        // Get a reference for the custom view close button
+        Button saveButton = (Button) customView.findViewById(R.id.saveButton);
+
+        // Set a click listener for the popup window close button
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Dismiss the popup window
+                // TODO: Save data to database
+                mPopupWindow.dismiss();
+            }
+        });
+
+        mPopupWindow.showAtLocation(mConstraintLayout, Gravity.CENTER,0,0);
     }
 
-    // TODO: Add option to save or not
     public void endDrill()
     {
         for(PuckPerfectDevice device : devices)
@@ -414,7 +478,6 @@ public class RecordActivity extends AppCompatActivity {
                 device.exportData(this);
         }
     }
-
 
     public void clearDebugText()
     {

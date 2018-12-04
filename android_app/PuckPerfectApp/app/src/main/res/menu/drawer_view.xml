@@ -4,12 +4,15 @@
 
         <item
             android:id="@+id/nav_settings"
-            android:title="@string/settings" />
+            android:title="@string/settings"
+            app:itemTextAppearance="@style/MenuItems"/>
         <item
             android:id="@+id/nav_bluetooth"
-            android:title="@string/bluetooth" />
+            android:title="@string/bluetooth"
+            app:itemTextAppearance="@style/MenuItems"/>
         <item
             android:id="@+id/nav_logout"
-            android:title="@string/logout" />
+            android:title="@string/logout"
+            app:itemTextAppearance="@style/MenuItems"/>
     </group>
 </menu>

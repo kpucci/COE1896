@@ -51,6 +51,29 @@ public class StickData implements PuckPerfectData {
 
     }
 
+    public void storeData(byte[] buffer)
+    {
+        cal = new GregorianCalendar(TimeZone.getTimeZone("EST"));
+        fmt.setCalendar(cal);
+        String currTime = fmt.format(cal.getTime());
+
+        short distance;
+
+        try
+        {
+            distance = Short.parseShort((new String(buffer, 0, 3)).trim());
+
+            times.add(currTime);
+            distances.add(distance);
+        }
+        catch (NumberFormatException e)
+        {
+            Log.i(TAG, "STICK: Parse Error");
+            e.printStackTrace();
+        }
+
+    }
+
     public String printLastDataPoint()
     {
         String output = "Time: " + times.get(times.size()-1) + "\n" +

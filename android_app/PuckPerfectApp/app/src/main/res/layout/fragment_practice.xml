@@ -53,7 +53,7 @@
             <ScrollView
                 android:id="@+id/scrollView2"
                 android:layout_width="0dp"
-                android:layout_height="500dp"
+                android:layout_height="200dp"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="@+id/coneDrillFrame"
                 app:layout_constraintStart_toStartOf="@+id/coneDrillFrame"
@@ -80,15 +80,16 @@
             <Button
                 android:id="@+id/practiceButton"
                 style="@style/Widget.AppCompat.Button"
-                android:layout_width="0dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="32dp"
+                android:layout_marginEnd="8dp"
                 android:background="@color/colorAccent"
                 android:text="@string/practice"
                 android:textSize="24sp"
-                app:layout_constraintEnd_toEndOf="@+id/scrollView2"
-                app:layout_constraintStart_toStartOf="@+id/scrollView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
 
 

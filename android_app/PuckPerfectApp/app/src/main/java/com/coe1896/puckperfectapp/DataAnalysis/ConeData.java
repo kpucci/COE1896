@@ -49,7 +49,9 @@ public class ConeData implements PuckPerfectData{
 
                 try
                 {
+                    Log.i(TAG, "Length: " + inputSplitSp.length);
                     if (inputSplitSp.length == 7) {
+                        Log.i(TAG, "Found 7 data points");
                         if (!inputSplitSp[0].equals(""))
                             d1 = Integer.parseInt(inputSplitSp[0]);
                         if (!inputSplitSp[1].equals(""))
@@ -66,15 +68,17 @@ public class ConeData implements PuckPerfectData{
                             d7 = Integer.parseInt(inputSplitSp[6]);
                     }
 
-                    // TODO: Detect when all are 0 vs all except 1 are zero
-                    times.add(currTime);
-                    distC1.add(d1);
-                    distC2.add(d2);
-                    distC3.add(d3);
-                    distC4.add(d4);
-                    distC5.add(d5);
-                    distC6.add(d6);
-                    distC7.add(d7);
+                    if(d1 != 0)
+                    {
+                        times.add(currTime);
+                        distC1.add(d1);
+                        distC2.add(d2);
+                        distC3.add(d3);
+                        distC4.add(d4);
+                        distC5.add(d5);
+                        distC6.add(d6);
+                        distC7.add(d7);
+                    }
                 }
                 catch (NumberFormatException e)
                 {
@@ -82,6 +86,43 @@ public class ConeData implements PuckPerfectData{
                     e.printStackTrace();
                 }
             }
+        }
+    }
+
+    public void storeData(byte[] buffer)
+    {
+        cal = new GregorianCalendar(TimeZone.getTimeZone("EST"));
+        fmt.setCalendar(cal);
+        String currTime = fmt.format(cal.getTime());
+
+        int d1 = 0, d2 = 0, d3 = 0, d4 = 0,
+                d5 = 0, d6 = 0, d7 = 0;
+
+        try
+        {
+            Log.i(TAG, "1: " + (new String(buffer, 0, 2)).trim());
+            d1 = Integer.parseInt((new String(buffer, 0, 2)).trim());
+
+            Log.i(TAG, "2: " + new String(buffer, 3, 2));
+            d2 = Integer.parseInt((new String(buffer, 3, 2)).trim());
+            d3 = Integer.parseInt((new String(buffer, 6, 2)).trim());
+            d4 = Integer.parseInt((new String(buffer, 9, 2)).trim());
+            d5 = Integer.parseInt((new String(buffer, 12, 2)).trim());
+            d6 = Integer.parseInt((new String(buffer, 15, 2)).trim());
+            d7 = Integer.parseInt((new String(buffer, 18, 2)).trim());
+
+            times.add(currTime);
+            distC1.add(d1);
+            distC2.add(d2);
+            distC3.add(d3);
+            distC4.add(d4);
+            distC5.add(d5);
+            distC6.add(d6);
+            distC7.add(d7);
+        }
+        catch (NumberFormatException e)
+        {
+            Log.i(TAG, "CONES: Wrong number format");
         }
     }
 

@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RecordActivity">
@@ -90,11 +91,10 @@
 
     <ScrollView
         android:id="@+id/coneDebugScroll"
-        android:layout_width="150dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toStartOf="@+id/stickDebugScroll"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:layout_width="250dp"
+        android:layout_height="225dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="64dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3">
 
@@ -108,13 +108,12 @@
 
     <ScrollView
         android:id="@+id/stickDebugScroll"
-        android:layout_width="150dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toStartOf="@+id/leftGloveDebugScroll"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/coneDebugScroll"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
+        android:layout_width="0dp"
+        android:layout_height="225dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="@+id/coneDebugScroll"
+        app:layout_constraintStart_toStartOf="@+id/coneDebugScroll"
+        app:layout_constraintTop_toBottomOf="@+id/coneDebugScroll">
 
         <TextView
             android:id="@+id/stickDebugText"
@@ -126,12 +125,11 @@
 
     <ScrollView
         android:id="@+id/leftGloveDebugScroll"
-        android:layout_width="150dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toStartOf="@+id/rightGloveDebugScroll"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/stickDebugScroll"
+        android:layout_width="250dp"
+        android:layout_height="225dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="64dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3">
 
         <TextView
@@ -144,13 +142,12 @@
 
     <ScrollView
         android:id="@+id/rightGloveDebugScroll"
-        android:layout_width="150dp"
-        android:layout_height="250dp"
-        android:layout_marginTop="48dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/leftGloveDebugScroll"
-        app:layout_constraintTop_toBottomOf="@+id/textView3">
+        android:layout_width="0dp"
+        android:layout_height="225dp"
+        android:layout_marginTop="64dp"
+        app:layout_constraintEnd_toEndOf="@+id/leftGloveDebugScroll"
+        app:layout_constraintStart_toStartOf="@+id/leftGloveDebugScroll"
+        app:layout_constraintTop_toBottomOf="@+id/leftGloveDebugScroll">
 
         <TextView
             android:id="@+id/rightGloveDebugText"
@@ -165,28 +162,12 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:text="@string/debug"
         android:textSize="36sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.456"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/coneGridConstraintLayout" />
-
-    <FrameLayout
-        android:id="@+id/coneGridConstraintLayout"
-        android:layout_width="600dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pauseButton">
-
-
-    </FrameLayout>
+        app:layout_constraintEnd_toEndOf="@+id/pauseButton"
+        app:layout_constraintStart_toStartOf="@+id/pauseButton"
+        app:layout_constraintTop_toBottomOf="@+id/pauseButton" />
 
     <TextView
         android:id="@+id/coneDebugTitle"
