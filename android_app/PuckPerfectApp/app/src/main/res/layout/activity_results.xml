@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ResultsActivity">
+
+    <TextView
+        android:id="@+id/resultsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Results"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="550dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resultsTitle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/rightGraphFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginEnd="8dp">
+
+                <com.jjoe64.graphview.GraphView
+                    android:id="@+id/rightGraph"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dip" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/rightGraphExpertFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginEnd="8dp">
+
+                <com.jjoe64.graphview.GraphView
+                    android:id="@+id/rightExpertGraph"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dip" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/leftGraphFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginEnd="8dp">
+
+                <com.jjoe64.graphview.GraphView
+                    android:id="@+id/leftGraph"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dip" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/leftGraphExpertFrame"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="64dp"
+                android:layout_marginEnd="8dp">
+
+                <com.jjoe64.graphview.GraphView
+                    android:id="@+id/leftExpertGraph"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dip" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/resultsText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="64dp"
+        android:text="Recommendations"
+        android:textAlignment="center"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:textSize="36sp"
+        app:layout_constraintEnd_toEndOf="@+id/scrollView"
+        app:layout_constraintStart_toStartOf="@+id/scrollView"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView" />
+
+    <TextView
+        android:id="@+id/recommendationText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="TextView"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/resultsText"
+        app:layout_constraintStart_toStartOf="@+id/resultsText"
+        app:layout_constraintTop_toBottomOf="@+id/resultsText" />
+
+</android.support.constraint.ConstraintLayout>

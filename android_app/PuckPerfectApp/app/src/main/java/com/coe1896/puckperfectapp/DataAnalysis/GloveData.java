@@ -109,7 +109,7 @@ public class GloveData implements PuckPerfectData{
             Log.i(TAG, "4: " + (new String(buffer, 24, 5)).trim());
             pressure = Integer.parseInt((new String(buffer, 24, 5)).trim());
 
-            if(yaw != 0 || pitch != 0 || roll != 0)
+            if(yaw != 0 && pitch != 0 && roll != 0)
             {
                 times.add(currTime);
                 yawVals.add(yaw);

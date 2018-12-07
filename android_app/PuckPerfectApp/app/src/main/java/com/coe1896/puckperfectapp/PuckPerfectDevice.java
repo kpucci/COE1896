@@ -21,17 +21,19 @@ import java.util.UUID;
 public class PuckPerfectDevice {
 
     public enum DEVICE_TYPE {
-        CONES(0, 256),
-        STICK(1, 4),
-        R_GLOVE(2, 29),
-        L_GLOVE(3, 29);
+        CONES(0, 256, 250),
+        STICK(1, 256, 190),
+        R_GLOVE(2, 256, 190),
+        L_GLOVE(3, 256, 190);
 
         private final int index;
         private final int buffSize;
+        private final int sleepTime;
 
-        DEVICE_TYPE(int index, int buffSize) {
+        DEVICE_TYPE(int index, int buffSize, int sleepTime) {
             this.index = index;
             this.buffSize = buffSize;
+            this.sleepTime = sleepTime;
         }
 
         public int getIndex() {
@@ -39,6 +41,9 @@ public class PuckPerfectDevice {
         }
         public int getBuffSize() {
             return this.buffSize;
+        }
+        public int getSleepTime() {
+            return this.sleepTime;
         }
 
         public static int getIndexFromName(String name) {
@@ -100,6 +105,9 @@ public class PuckPerfectDevice {
 
     public Context context;
 
+    private boolean isEnabled = true;
+    private View indicator;
+
 
     public PuckPerfectDevice(BluetoothDevice device)
     {
@@ -130,6 +138,30 @@ public class PuckPerfectDevice {
         }
 
         return data;
+    }
+
+    public boolean isEnabled()
+    {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled)
+    {
+        this.isEnabled = enabled;
+        if(!this.isEnabled)
+        {
+            disconnect();
+        }
+    }
+
+    public View getIndicator()
+    {
+        return this.indicator;
+    }
+
+    public void setIndicator(View indicator)
+    {
+        this.indicator = indicator;
     }
 
     public BluetoothDevice getBluetoothDevice() {
@@ -229,11 +261,14 @@ public class PuckPerfectDevice {
                 e.printStackTrace();
             }
         }
+
+        connectionState = false;
     }
 
     public void connect()
     {
         Log.i(TAG, "----- CONNECT METHOD INVOKED : " + device.getName().trim() + "-----");
+
         try {
             if(socket == null || !connectionState) {
                 socket = device.createInsecureRfcommSocketToServiceRecord(deviceUUID);
@@ -245,7 +280,7 @@ public class PuckPerfectDevice {
             }
         } catch(IOException e) {
             // Unable to connect to device
-            e.printStackTrace();
+            Log.i(TAG, "Unable to connect to " + device.getName().trim());
             connectionState = false;
         }
     }
@@ -296,6 +331,7 @@ public class PuckPerfectDevice {
         public void run() {
             Log.i(TAG, "----- INPUT READER: RUNNING -----");
             InputStream inputStream;
+            int sleepTime = type.getSleepTime();
 
             try {
                 if(socket != null)
@@ -315,8 +351,8 @@ public class PuckPerfectDevice {
                             }
                             final String strInput = new String(buffer, 0, i);
 
-                            if(type == DEVICE_TYPE.L_GLOVE)
-                                Log.i(TAG, "Input from " + device.getName().trim() + ": " + strInput);
+                            // if(type == DEVICE_TYPE.L_GLOVE)
+                            //     Log.i(TAG, "Input from " + device.getName().trim() + ": " + strInput);
 
                             // Check if string is null or empty --> if so, lost connection
                             if(strInput.isEmpty())
@@ -375,7 +411,7 @@ public class PuckPerfectDevice {
                             connectionState = false;
                             this.stop();
                         }
-                        Thread.sleep(250); // TODO: Change back to 250
+                        Thread.sleep(sleepTime); // TODO: Change back to 250
                     }
                 }
 

@@ -7,10 +7,153 @@
     android:layout_height="match_parent"
     tools:context=".RecordActivity">
 
+    <TextView
+        android:id="@+id/coneOptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Cones:"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/stickOptionText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/coneEnable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:checked="true"
+        android:text="Enable"
+        app:layout_constraintEnd_toEndOf="@+id/coneOptionText"
+        app:layout_constraintStart_toStartOf="@+id/coneOptionText"
+        app:layout_constraintTop_toBottomOf="@+id/coneOptionText" />
+
+    <View
+        android:id="@+id/coneIndicator"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/circle_red"
+        app:layout_constraintEnd_toEndOf="@+id/coneEnable"
+        app:layout_constraintStart_toStartOf="@+id/coneEnable"
+        app:layout_constraintTop_toBottomOf="@+id/coneEnable" />
+
+    <TextView
+        android:id="@+id/stickOptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:text="Stick:"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/coneOptionText"
+        app:layout_constraintEnd_toStartOf="@+id/rGloveOptionText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/coneOptionText" />
+
+    <Switch
+        android:id="@+id/stickEnable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Enable"
+        app:layout_constraintBaseline_toBaselineOf="@+id/coneEnable"
+        app:layout_constraintEnd_toEndOf="@+id/stickOptionText"
+        app:layout_constraintStart_toStartOf="@+id/stickOptionText" />
+
+    <View
+        android:id="@+id/stickIndicator"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/circle_red"
+        app:layout_constraintEnd_toEndOf="@+id/stickEnable"
+        app:layout_constraintStart_toStartOf="@+id/stickEnable"
+        app:layout_constraintTop_toBottomOf="@+id/stickEnable" />
+
+    <TextView
+        android:id="@+id/rGloveOptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:text="Right Glove:"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/stickOptionText"
+        app:layout_constraintEnd_toStartOf="@+id/lGloveOptionText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/stickOptionText" />
+
+    <Switch
+        android:id="@+id/rGloveEnable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Enable"
+        app:layout_constraintBaseline_toBaselineOf="@+id/coneEnable"
+        app:layout_constraintEnd_toEndOf="@+id/rGloveOptionText"
+        app:layout_constraintStart_toStartOf="@+id/rGloveOptionText" />
+
+    <View
+        android:id="@+id/rGloveIndicator"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/circle_red"
+        app:layout_constraintEnd_toEndOf="@+id/rGloveEnable"
+        app:layout_constraintStart_toStartOf="@+id/rGloveEnable"
+        app:layout_constraintTop_toBottomOf="@+id/rGloveEnable" />
+
+    <TextView
+        android:id="@+id/lGloveOptionText"
+        android:layout_width="wrap_content"
+        android:layout_height="22dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="32dp"
+        android:text="Left Glove:"
+        android:textSize="18sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/stickOptionText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/rGloveOptionText" />
+
+    <Switch
+        android:id="@+id/lGloveEnable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="Enable"
+        app:layout_constraintBaseline_toBaselineOf="@+id/coneEnable"
+        app:layout_constraintEnd_toEndOf="@+id/lGloveOptionText"
+        app:layout_constraintStart_toStartOf="@+id/lGloveOptionText" />
+
+    <View
+        android:id="@+id/lGloveIndicator"
+        android:layout_width="30dip"
+        android:layout_height="30dip"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/circle_red"
+        app:layout_constraintEnd_toEndOf="@+id/lGloveEnable"
+        app:layout_constraintStart_toStartOf="@+id/lGloveEnable"
+        app:layout_constraintTop_toBottomOf="@+id/lGloveEnable" />
+
+
+    <View
+        android:id="@+id/horizontalRule"
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coneIndicator" />
+
     <EditText
         android:id="@+id/secText"
         android:layout_width="240dp"
-        android:layout_height="150dp"
+        android:layout_height="110dp"
         android:layout_marginStart="32dp"
         android:ems="10"
         android:hint="sec"
@@ -60,9 +203,9 @@
 
     <EditText
         android:id="@+id/minText"
-        android:layout_width="240dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="100dp"
+        android:layout_width="200dp"
+        android:layout_height="110dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:ems="10"
         android:hint="min"
@@ -71,12 +214,12 @@
         android:textColor="@color/counter_text"
         android:textSize="64sp"
         app:layout_constraintEnd_toStartOf="@+id/colonText"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/horizontalRule" />
 
     <EditText
         android:id="@+id/colonText"
         android:layout_width="50dp"
-        android:layout_height="150dp"
+        android:layout_height="110dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:ems="10"

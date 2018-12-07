@@ -19,10 +19,12 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import com.coe1896.puckperfectapp.DataAnalysis.PuckPerfectData;
 import com.coe1896.puckperfectapp.PuckPerfectDevice.DEVICE_TYPE;
 
 public class RecordActivity extends AppCompatActivity {
@@ -80,6 +83,8 @@ public class RecordActivity extends AppCompatActivity {
     Button endButton;
     Button pauseButton;
 
+    boolean isTimerRunning = false;
+
     Calendar cal;
     SimpleDateFormat fmt;
 
@@ -94,6 +99,19 @@ public class RecordActivity extends AppCompatActivity {
     private PopupWindow mPopupWindow;
     private Context mContext;
     private ConstraintLayout mConstraintLayout;
+
+    Switch coneEnable;
+    Switch stickEnable;
+    Switch rGloveEnable;
+    Switch lGloveEnable;
+
+    View coneInd;
+    View stickInd;
+    View rGloveInd;
+    View lGloveInd;
+
+
+    View[] indicators = new View[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +161,104 @@ public class RecordActivity extends AppCompatActivity {
 
         fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
+        coneInd = (View) findViewById(R.id.coneIndicator);
+        stickInd = (View) findViewById(R.id.stickIndicator);
+        rGloveInd = (View) findViewById(R.id.rGloveIndicator);
+        lGloveInd = (View) findViewById(R.id.lGloveIndicator);
+
+        indicators[DEVICE_TYPE.CONES.getIndex()] = coneInd;
+        indicators[DEVICE_TYPE.STICK.getIndex()] = stickInd;
+        indicators[DEVICE_TYPE.R_GLOVE.getIndex()] = rGloveInd;
+        indicators[DEVICE_TYPE.L_GLOVE.getIndex()] = lGloveInd;
+
+        coneEnable = (Switch) findViewById(R.id.coneEnable);
+        coneEnable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) //Line A
+            {
+                int index = DEVICE_TYPE.CONES.getIndex();
+                if(devices[index] != null)
+                {
+                    devices[index].setEnabled(isChecked);
+                    if(isChecked)
+                        coneInd.setBackgroundResource(R.drawable.circle_red);
+                    else
+                        coneInd.setBackgroundResource(R.drawable.circle_gray);
+                }
+                else
+                {
+                    coneInd.setBackgroundResource(R.drawable.circle_gray);
+                }
+
+            }
+        });
+
+        stickEnable = (Switch) findViewById(R.id.stickEnable);
+        stickEnable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) //Line A
+            {
+                int index = DEVICE_TYPE.STICK.getIndex();
+                if(devices[index] != null)
+                {
+                    devices[index].setEnabled(isChecked);
+                    if(isChecked)
+                        stickInd.setBackgroundResource(R.drawable.circle_red);
+                    else
+                        stickInd.setBackgroundResource(R.drawable.circle_gray);
+                }
+                else
+                {
+                    stickInd.setBackgroundResource(R.drawable.circle_gray);
+                }
+
+            }
+        });
+
+        rGloveEnable = (Switch) findViewById(R.id.rGloveEnable);
+        rGloveEnable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) //Line A
+            {
+                int index = DEVICE_TYPE.R_GLOVE.getIndex();
+                if(devices[index] != null)
+                {
+                    devices[index].setEnabled(isChecked);
+                    if(isChecked)
+                        rGloveInd.setBackgroundResource(R.drawable.circle_red);
+                    else
+                        rGloveInd.setBackgroundResource(R.drawable.circle_gray);
+                }
+                else
+                {
+                    rGloveInd.setBackgroundResource(R.drawable.circle_gray);
+                }
+
+            }
+        });
+
+        lGloveEnable = (Switch) findViewById(R.id.lGloveEnable);
+        lGloveEnable.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) //Line A
+            {
+                int index = DEVICE_TYPE.L_GLOVE.getIndex();
+                if(devices[index] != null)
+                {
+                    devices[index].setEnabled(isChecked);
+                    if(isChecked)
+                        lGloveInd.setBackgroundResource(R.drawable.circle_red);
+                    else
+                        lGloveInd.setBackgroundResource(R.drawable.circle_gray);
+                }
+                else
+                {
+                    lGloveEnable.setBackgroundResource(R.drawable.circle_gray);
+                }
+            }
+        });
+
+
         // Make sure bluetooth is connected
         BTAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -187,20 +303,40 @@ public class RecordActivity extends AppCompatActivity {
     {
         Log.i(TAG, "----- ON STOP METHOD INVOKED -----");
         for(PuckPerfectDevice device : devices)
-            if(device != null && device.getSocket() != null && device.isConnected())
+        {
+            if(device != null && device.getSocket() != null)
             {
                 DisconnectDevice disconnectTask = new DisconnectDevice();
                 disconnectTask.device = device;
                 disconnectTask.execute();
             }
-
-        if(this.btMonitor != null && this.btMonitor.isRunning())
-        {
-            this.btMonitor.stop();
-            btMonitor = null;
         }
 
+        // Stop bluetooth monitor
+        if(this.btMonitor != null)
+        {
+            this.btMonitor.stop();
+        }
+
+        // Stop timer
+        if(isTimerRunning)
+            endTimer();
+
         super.onStop();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        if(this.btMonitor != null)
+        {
+            this.btMonitor.stop();
+        }
+
+        if(countDownTimer != null)
+            countDownTimer.cancel();
+
+        super.onDestroy();
     }
 
     /**
@@ -273,6 +409,7 @@ public class RecordActivity extends AppCompatActivity {
     public void startTimerHandler(View view)
     {
         practiceMin = 0;
+        practiceSec = 0;
 
         if(secTime.getText().length() != 0)
         {
@@ -284,11 +421,6 @@ public class RecordActivity extends AppCompatActivity {
             }
             else
                 practiceSec = tempSec;
-        }
-        else
-        {
-            Toast.makeText(getApplicationContext(), "Please enter a time for seconds", Toast.LENGTH_LONG).show();
-            return;
         }
 
         if(minTime.getText().length() != 0)
@@ -367,6 +499,7 @@ public class RecordActivity extends AppCompatActivity {
      */
     public void pauseTimer(View view)
     {
+
         // Tell bluetooth modules to stop acquiring
         stopModules();
 
@@ -419,6 +552,10 @@ public class RecordActivity extends AppCompatActivity {
 
         endDrill();
 
+        // Restart bluetooth monitor;
+        if(this.btMonitor != null)
+            btMonitor.stop();
+
         btMonitor = new BluetoothMonitor();
 
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -438,6 +575,7 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Dismiss the popup window
+                Log.i(TAG, "Clicked cancel button");
                 mPopupWindow.dismiss();
             }
         });
@@ -450,6 +588,7 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Dismiss the popup window
+                Log.i(TAG, "Clicked discard button");
                 mPopupWindow.dismiss();
             }
         });
@@ -463,7 +602,18 @@ public class RecordActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Dismiss the popup window
                 // TODO: Save data to database
+                Log.i(TAG, "Clicked save button");
                 mPopupWindow.dismiss();
+
+                if(btMonitor != null)
+                {
+                    btMonitor.stop();
+                    btMonitor = null;
+                }
+
+                // Go to results activity
+                Intent intent = new Intent(getApplicationContext(), ResultsActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -472,6 +622,7 @@ public class RecordActivity extends AppCompatActivity {
 
     public void endDrill()
     {
+
         for(PuckPerfectDevice device : devices)
         {
             if(device != null && device.isConnected())
@@ -485,6 +636,15 @@ public class RecordActivity extends AppCompatActivity {
         if(rightGloveDebug != null) rightGloveDebug.setText("");
         if(coneDebug != null) coneDebug.setText("");
         if(stickDebug != null) stickDebug.setText("");
+    }
+
+    public void stopMonitor(View view)
+    {
+        if(btMonitor != null)
+        {
+            btMonitor.stop();
+            btMonitor = null;
+        }
     }
 
 
@@ -538,7 +698,7 @@ public class RecordActivity extends AppCompatActivity {
 
             Log.i(TAG, "----- SEARCH DEVICES: ON POST EXECUTE METHOD INVOKED -----");
 
-            if(btMonitor != null && btMonitor.isRunning())
+            if(btMonitor != null)
                 btMonitor.stop();
 
 
@@ -581,6 +741,7 @@ public class RecordActivity extends AppCompatActivity {
         private Thread t;
         private TextView debugTextView = null;
         private ScrollView debugScrollView = null;
+        private PuckPerfectDevice ppDevice;
 
         public BluetoothMonitor() {
             Log.i(TAG, "----- BLUETOOTH MONITOR: CONSTRUCTOR INVOKED -----");
@@ -594,32 +755,45 @@ public class RecordActivity extends AppCompatActivity {
 
         @Override
         public void run() {
-            Log.i(TAG, "----- BLUETOOTH MONITOR: RUNNING -----");
-
             try
             {
                 while(!bStop)
                 {
                     for(PuckPerfectDevice device : devices)
                     {
+                        ppDevice = device;
                         // Check if device is connected
-                        if(device != null && !device.isConnected())
+                        if(device != null && !device.isConnected() && device.isEnabled() && !bStop)
                         {
                             Log.i(TAG, device.getName() + " is not connected. Connecting now");
                             // If not connected, try to connect it
                             device.connect();
+                            if(device.isConnected())
+                            {
+                                Log.i(TAG, device.getName() + " is connected.");
+                                indicators[device.getType().getIndex()].setBackgroundResource(R.drawable.circle_green);
+                            }
+
                         }
                         else if(device != null && device.isConnected())
                         {
                             Log.i(TAG, device.getName() + " is connected.");
+                            indicators[device.getType().getIndex()].setBackgroundResource(R.drawable.circle_green);
+                        }
+                        else if(device != null && !device.isEnabled())
+                        {
+                            DisconnectDevice disconnect = new DisconnectDevice();
+                            disconnect.device = device;
+                            disconnect.execute();
                         }
                     }
 
-                    Thread.sleep(15000); // Check every 15s
+                    Thread.sleep(5000); // Check every 15s
                 }
             }
             catch(InterruptedException e)
             {
+                indicators[ppDevice.getType().getIndex()].setBackgroundResource(R.drawable.circle_red);
                 e.printStackTrace();
             }
         }

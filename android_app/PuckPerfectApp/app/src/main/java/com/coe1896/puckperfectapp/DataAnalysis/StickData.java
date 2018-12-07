@@ -3,6 +3,8 @@ package com.coe1896.puckperfectapp.DataAnalysis;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.coe1896.puckperfectapp.MainActivity;
@@ -16,14 +18,15 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
-public class StickData implements PuckPerfectData {
+public class StickData implements PuckPerfectData{
     public final String TAG = "STICK DATA";
 
     Calendar cal;
-    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
     public ArrayList<String> times = new ArrayList<>();
     public ArrayList<Short> distances = new ArrayList<>();
+
 
     public void storeData(String input)
     {
@@ -33,7 +36,6 @@ public class StickData implements PuckPerfectData {
 
         String inputSplit[] = input.split("\n");
         short distance = (short) 0;
-
 
         try
         {

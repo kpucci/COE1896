@@ -33,8 +33,11 @@ public class ConeDrillGif extends SurfaceView implements SurfaceHolder.Callback,
     // private static int[] y_coords = {300, 250, 180, 145, 190, 260, 375, 455, 405, 300, 180, 160, 255, 375, 455, 425, 360};
 
     // Tablet version
-    private static int[] x_coords = {670, 725, 820, 955, 1070, 1125, 1100, 975, 800, 670, 545, 345, 230, 235, 355, 500, 610};
-    private static int[] y_coords = {285, 215, 115, 75, 125, 235, 385, 485, 425, 285, 135, 85, 195, 360, 485, 465, 360};
+    // private static int[] x_coords = {670, 725, 820, 955, 1070, 1125, 1100, 965, 800, 670, 545, 345, 230, 235, 355, 500, 610};
+    // private static int[] y_coords = {350, 280, 180, 140,  190,  300,  455, 555, 500, 350, 210, 155, 270, 440, 555, 530, 425};
+
+    private static int[] x_coords = {670, 545, 345, 220, 235, 355, 500, 610, 670, 725, 820, 955, 1070, 1125, 1100, 965, 800};
+    private static int[] y_coords = {350, 210, 155, 270, 440, 555, 530, 425, 350, 280, 180, 140,  190,  300,  455, 555, 500};
 
     private int index = 0;
 

@@ -176,7 +176,10 @@
     <string name="stats">Stats</string>
     <string name="logout">Logout</string>
     <string name="figure_8">Figure 8 Drill</string>
-    <string name="figure_8_description">Figure 8 description</string>
+    <string name="figure_8_description">1. Start with your feet facing toward the cones.\n\n
+                                        2. Place the ball in the center of the two cones with your stick on the right side of the ball.\n\n
+                                        3. When the drill begins, move the ball toward the top of the left cone and follow the path as shown above.
+                                </string>
     <string name="age_group">Age Group</string>
     <string name="bluetooth">Bluetooth</string>
     <string name="title_activity_record">RecordActivity</string>
@@ -188,4 +191,5 @@
     <string name="connectCones">Cones</string>
     <string name="progress">Progress</string>
     <string name="debug">Debug</string>
+    <string name="setup">Drill Setup</string>
 </resources>
